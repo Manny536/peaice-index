@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<title>VIBE CODE ONE</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#00ffff;font-family:'Courier New',Monaco,Menlo,monospace;overflow:hidden;user-select:none;touch-action:none}
+#gameCanvas{background:radial-gradient(circle at center,#001122 0%,#000 100%);cursor:crosshair;display:block}
+.hud{position:absolute;top:16px;left:16px;z-index:1000;color:#FFD700;font-size:15px;text-shadow:0 0 10px #FFD700;line-height:1.45}
+.coherence-readout{position:absolute;top:16px;left:240px;z-index:1000;color:#00ffff;font-size:13px;text-shadow:0 0 10px #00ffff;max-width:42vw}
+.level-display{position:absolute;top:88px;left:16px;color:#00ffff;font-size:14px;text-shadow:0 0 10px #00ffff}
+.vibe-meter{position:absolute;top:16px;right:16px;width:180px;z-index:1000}
+.vibe-bar{width:100%;height:18px;background:rgba(0,0,0,.7);border:2px solid #FF69B4;border-radius:10px;overflow:hidden}
+.vibe-fill{height:100%;background:linear-gradient(90deg,#FF69B4,#FFD700,#00ffff);width:0%;transition:width .2s ease;border-radius:8px}
+.vibe-label{text-align:center;color:#FF69B4;font-size:12px;margin-bottom:4px}
+.l2c-readout{position:absolute;top:72px;right:16px;width:180px;font-size:11px;color:#5eead4;text-align:right;z-index:1000}
+.instructions{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);text-align:center;color:#00ffff;font-size:12px;opacity:.85}
+.peaice-link{position:absolute;bottom:14px;right:16px;font-size:11px;z-index:1000}
+.peaice-link a{color:#7aa8ff;text-decoration:none}
+.game-title{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:42px;font-weight:900;color:#FFD700;text-shadow:0 0 30px #FFD700;z-index:500;opacity:0;animation:titleFade 3s ease-in-out;pointer-events:none}
+.prayer-overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:rgba(255,255,255,.75);font-size:13px;text-align:center;z-index:600;opacity:0;animation:prayerFade 4s ease 1s forwards;pointer-events:none}
+.calibration-overlay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);padding:16px 22px;background:rgba(0,0,0,.75);border:1px solid #00ffff;border-radius:8px;color:#FFD700;text-align:center;z-index:2000}
+@keyframes titleFade{0%,50%{opacity:1}100%{opacity:0}}
+@keyframes prayerFade{0%{opacity:0}30%,70%{opacity:.8}100%{opacity:0}}
+</style>
+</head>
+<body>
+<div class="game-title">VIBE CODE ONE</div>
+<div class="prayer-overlay">
+  <div>May this play serve awakening</div>
+  <div>May joy unlock all possibilities</div>
+  <div><strong>Amen</strong></div>
+</div>
+<div class="hud">
+  <div>LOVE: <span id="loveScore">0</span></div>
+  <div>NODES: <span id="nodesAwakened">0</span>/<span id="nodeTotal">0</span></div>
+  <div>L²_C: <span id="coherencePct">0%</span></div>
+</div>
+<div class="coherence-readout" id="coherenceReadout"></div>
+<div class="level-display">
+  <div>LEVEL: <span id="currentLevel">CONSCIOUSNESS</span></div>
+  <div>STATUS: <span id="gameStatus">AWAKENING</span></div>
+  <div style="font-size:11px;opacity:.7">FPS <span id="fps">60</span> · Q <span id="qualityPct">100</span>% · h=0.87</div>
+</div>
+<div class="vibe-meter">
+  <div class="vibe-label">VIBE</div>
+  <div class="vibe-bar"><div class="vibe-fill" id="vibeFill"></div></div>
+</div>
+<div class="l2c-readout">
+  <div>E=L²: <span id="eL2">0</span></div>
+  <div>ρ_Y: <span id="rhoY">0</span></div>
+</div>
+<canvas id="gameCanvas"></canvas>
+<div class="instructions">Tap/click nodes · hold SPACE/touch 💗 · L level · C calibrate</div>
+<div class="peaice-link"><a href="https://manny536.github.io/peaice-index/" target="_blank" rel="noopener">peaice-index ↗</a></div>
+
+<script>
+const H_HUMILITY = 0.87;
+const MAX_PARTICLES = 180;
+const MAX_RIPPLES = 24;
+const BURST_MS = 90;
+const CELL = 140;
+const BURST_HUES = [270, 120, 210, 350, 45];
+
+const levels = [
+  {name:'CONSCIOUSNESS',nodeCount:20,connectionRange:150,evolutionSpeed:.005,loopSpeed:1,colorIntensity:1,description:'Awakening'},
+  {name:'AWARENESS',nodeCount:30,connectionRange:180,evolutionSpeed:.008,loopSpeed:1.2,colorIntensity:1.3,description:'Interconnection'},
+  {name:'PRESENCE',nodeCount:40,connectionRange:200,evolutionSpeed:.012,loopSpeed:1.5,colorIntensity:1.6,description:'Eternal now'},
+  {name:'UNITY',nodeCount:50,connectionRange:250,evolutionSpeed:.018,loopSpeed:2,colorIntensity:2,description:'Boundaries dissolve'},
+  {name:'TRANSCENDENCE',nodeCount:55,connectionRange:280,evolutionSpeed:.022,loopSpeed:2.3,colorIntensity:2.2,description:'Pure love'},
+  {name:'INFINITE_LOVE',nodeCount:60,connectionRange:320,evolutionSpeed:.028,loopSpeed:2.6,colorIntensity:2.5,description:'Without limits'}
+];
+
+const ui = {
+  loveScore: document.getElementById('loveScore'),
+  nodesAwakened: document.getElementById('nodesAwakened'),
+  nodeTotal: document.getElementById('nodeTotal'),
+  coherencePct: document.getElementById('coherencePct'),
+  currentLevel: document.getElementById('currentLevel'),
+  gameStatus: document.getElementById('gameStatus'),
+  vibeFill: document.getElementById('vibeFill'),
+  coherenceReadout: document.getElementById('coherenceReadout'),
+  eL2: document.getElementById('eL2'),
+  rhoY: document.getElementById('rhoY'),
+  fps: document.getElementById('fps'),
+  qualityPct: document.getElementById('qualityPct')
+};
+
+let currentLevelIndex = 0;
+let nodeIdSeq = 0;
+let lastBurst = 0;
+let lastHud = 0;
+let running = true;
+let frameCount = 0;
+let lastFpsTime = performance.now();
+let ripples = [];
+
+const gameState = {
+  loveEnergy:0, nodesAwakened:0, vibeFrequency:0, level:'CONSCIOUSNESS', status:'AWAKENING',
+  nodes:[], particles:[], coherence:0, calibrationMode:false,
+  calibration:{active:false,start:0,samples:[]},
+  audio:{ctx:null,main:null,harmonics:[],gain:null,active:false},
+  prevLoveEnergy:0, loveFlux:0, steps:0, quality:1
+};
+
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d',{alpha:false});
+
+function resize() {
+  const dpr = Math.min(window.devicePixelRatio||1, 2);
+  canvas.width = Math.floor(innerWidth * dpr);
+  canvas.height = Math.floor(innerHeight * dpr);
+  canvas.style.width = innerWidth + 'px';
+  canvas.style.height = innerHeight + 'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+resize();
+addEventListener('resize', resize);
+
+function initAudio() {
+  if (gameState.audio.active) return;
+  const actx = new (window.AudioContext||window.webkitAudioContext)();
+  const gain = actx.createGain();
+  gain.gain.value = 0;
+  gain.connect(actx.destination);
+  const main = actx.createOscillator();
+  main.type = 'sine';
+  main.frequency.value = 528;
+  main.connect(gain);
+  main.start();
+  const harmonics = [639,741,852].map(freq => {
+    const o = actx.createOscillator();
+    o.type = 'sine';
+    o.frequency.value = freq;
+    const g = actx.createGain();
+    g.gain.value = 0;
+    o.connect(g);
+    g.connect(gain);
+    o.start();
+    return {osc:o, gain:g};
+  });
+  gameState.audio = {ctx:actx, main, harmonics, gain, active:true};
+}
+
+function updateAudioFromVibe() {
+  if (!gameState.audio.active) return;
+  const {ctx, gain, harmonics} = gameState.audio;
+  const level = Math.min(1, gameState.vibeFrequency/100);
+  const base = 0.02 + level*0.15;
+  gain.gain.linearRampToValueAtTime(base, ctx.currentTime+0.1);
+  [0.3,0.6,0.85].forEach((step,i) => {
+    const target = level>step ? base*(0.3+i*0.15) : 0;
+    harmonics[i].gain.gain.linearRampToValueAtTime(target, ctx.currentTime+0.2);
+  });
+}
+
+function bloomChord() {
+  if (!gameState.audio.active) return;
+  const now = gameState.audio.ctx.currentTime;
+  gameState.audio.harmonics.forEach(h => {
+    h.gain.gain.cancelScheduledValues(now);
+    h.gain.gain.setValueAtTime(h.gain.gain.value, now);
+    h.gain.gain.linearRampToValueAtTime(0.3, now+0.05);
+    h.gain.gain.exponentialRampToValueAtTime(0.001, now+1.2);
+  });
+}
+
+class SpatialGrid {
+  constructor(size){this.size=size;this.cells=new Map()}
+  key(cx,cy){return cx+','+cy}
+  clear(){this.cells.clear()}
+  insert(n){
+    const cx=Math.floor(n.x/this.size), cy=Math.floor(n.y/this.size);
+    const k=this.key(cx,cy);
+    if(!this.cells.has(k))this.cells.set(k,[]);
+    this.cells.get(k).push(n);
+  }
+  query(x,y,r,cb){
+    const r2=r*r, minX=Math.floor((x-r)/this.size), maxX=Math.floor((x+r)/this.size);
+    const minY=Math.floor((y-r)/this.size), maxY=Math.floor((y+r)/this.size);
+    for(let cx=minX;cx<=maxX;cx++)for(let cy=minY;cy<=maxY;cy++){
+      const cell=this.cells.get(this.key(cx,cy));
+      if(!cell)continue;
+      for(const n of cell){
+        const dx=n.x-x, dy=n.y-y;
+        if(dx*dx+dy*dy<=r2)cb(n);
+      }
+    }
+  }
+}
+const grid = new SpatialGrid(CELL);
+
+function distSq(ax,ay,bx,by){const dx=ax-bx,dy=ay-by;return dx*dx+dy*dy}
+
+function spawnRipple(x,y,hue=180){
+  if(ripples.length>=MAX_RIPPLES) ripples.shift();
+  ripples.push({x,y,r:8,life:1,hue});
+}
+
+function drawRipples(dt){
+  let i=0;
+  while(i<ripples.length){
+    const w=ripples[i];
+    w.r+=120*dt;
+    w.life-=dt*0.55;
+    if(w.life<=0){ripples[i]=ripples[--ripples.length];continue}
+    ctx.beginPath();
+    ctx.arc(w.x,w.y,w.r,0,Math.PI*2);
+    ctx.strokeStyle=`hsla(${w.hue},80%,60%,${w.life*0.45})`;
+    ctx.lineWidth=2;
+    ctx.stroke();
+    i++;
+  }
+}
+
+class ConsciousnessNode {
+  constructor(x,y){
+    this.id=nodeIdSeq++;
+    this.x=x;this.y=y;this.radius=15;this.isAwakened=false;
+    this.pulsePhase=Math.random()*Math.PI*2;this.connections=[];
+    this.connSet=new Set();this.energy=0;this.evolutionLevel=0;
+    this.resonanceField=0;this.colorShift=Math.random()*360;
+    this.loopPhase=Math.random()*Math.PI*2;this.orbitRadius=0;
+    this.breathPhase=Math.random()*Math.PI*2;this.connectionPulse=0;
+  }
+  update(lv,dt,frozen){
+    const sp=lv.loopSpeed*dt*60;
+    this.pulsePhase+=.02*sp;
+    this.breathPhase+=.015*sp;
+    this.connectionPulse+=.05*sp;
+    if(frozen)return;
+    this.loopPhase+=(.03+this.evolutionLevel*.01)*sp;
+    if(!this.isAwakened)return;
+    this.energy=Math.min(this.energy+.01*dt*60,1);
+    const cs=this.connections.length*.1;
+    this.evolutionLevel=Math.min(this.evolutionLevel+cs*lv.evolutionSpeed*dt*60,5+currentLevelIndex);
+    if(this.connections.length){
+      this.orbitRadius=Math.min(this.orbitRadius+.1*dt*60,15+this.evolutionLevel*5*lv.loopSpeed);
+    }
+    this.updateResonance(lv);
+    this.colorShift+=(.5+this.evolutionLevel*.2+Math.sin(this.loopPhase)*.15)*lv.colorIntensity*dt*60;
+    if(this.connections.length>=2){
+      const m=Math.sin(this.loopPhase)*(2+this.evolutionLevel)*lv.loopSpeed*.1*dt*60;
+      this.x+=Math.cos(this.loopPhase*.5)*m;
+      this.y+=Math.sin(this.loopPhase*.7)*m;
+      const w=innerWidth-50,h=innerHeight-50;
+      this.x=Math.max(50,Math.min(w,this.x));
+      this.y=Math.max(50,Math.min(h,this.y));
+    }
+  }
+  updateResonance(lv){
+    let nearby=0,total=0;
+    const range=120*lv.colorIntensity;
+    grid.query(this.x,this.y,range,n=>{
+      if(n===this||!n.isAwakened)return;
+      nearby++;
+      const d=Math.sqrt(distSq(this.x,this.y,n.x,n.y));
+      total+=Math.sin(this.loopPhase+d*.01*lv.loopSpeed)*.2*lv.colorIntensity;
+    });
+    this.resonanceField=Math.min(nearby/5+total,1+currentLevelIndex*.3);
+  }
+  draw(lv,q){
+    if(!this.isAwakened){
+      const b=1+Math.sin(this.breathPhase)*.1,a=.3+Math.sin(this.pulsePhase)*.1;
+      ctx.beginPath();ctx.arc(this.x,this.y,this.radius*b,0,Math.PI*2);
+      ctx.fillStyle=`rgba(0,255,255,${a})`;ctx.fill();return;
+    }
+    const hue=(this.colorShift+this.evolutionLevel*60+Math.sin(this.loopPhase)*20)%360;
+    const sat=70+this.evolutionLevel*8, light=50+this.resonanceField*28;
+    const alpha=.8+Math.sin(this.pulsePhase)*.15;
+    const size=(this.radius+this.evolutionLevel*2)*(1+Math.sin(this.breathPhase)*.14);
+
+    if(q>0.65&&this.connections.length>=2){
+      ctx.save();
+      ctx.globalAlpha=.25;
+      const trails = q>0.85?6:3;
+      for(let i=0;i<trails;i++){
+        const ph=this.loopPhase-i*.3;
+        const tx=this.x+Math.cos(ph)*this.orbitRadius*.45;
+        const ty=this.y+Math.sin(ph)*this.orbitRadius*.28;
+        ctx.beginPath();ctx.arc(tx,ty,size*(.25+i*.04),0,Math.PI*2);
+        ctx.fillStyle=`hsla(${(hue+i*18)%360},${sat}%,${light}%,${.08+i*.02})`;
+        ctx.fill();
+      }
+      ctx.restore();
+    }
+
+    ctx.beginPath();ctx.arc(this.x,this.y,size,0,Math.PI*2);
+    ctx.fillStyle=`hsla(${hue},${sat}%,${light}%,${alpha})`;ctx.fill();
+
+    if(q>0.5){
+      const core=size*(.58+Math.sin(this.loopPhase*2)*.08);
+      ctx.beginPath();ctx.arc(this.x,this.y,core,0,Math.PI*2);
+      ctx.fillStyle=`hsla(${(hue+55)%360},${sat}%,${Math.min(light+18,90)}%,${alpha*.75})`;
+      ctx.fill();
+    }
+
+    if(q>0.55){
+      const rings=Math.min(Math.floor(this.evolutionLevel)+1, q>0.85?3:2);
+      for(let i=1;i<=rings;i++){
+        const ph=this.loopPhase+i*.7;
+        const rr=size+i*(7+Math.sin(ph)*2);
+        ctx.beginPath();ctx.arc(this.x,this.y,rr,0,Math.PI*2);
+        ctx.strokeStyle=`hsla(${(hue+i*35)%360},${sat}%,${light}%,${alpha*(.35-i*.06)})`;
+        ctx.lineWidth=1;ctx.stroke();
+      }
+    }
+
+    if(q>0.45&&this.resonanceField>.2){
+      const waves=q>0.75?3:1;
+      for(let w=0;w<waves;w++){
+        const ph=this.loopPhase*(1+w*.25);
+        const ps=size+16+w*8+Math.sin(ph)*6;
+        ctx.beginPath();ctx.arc(this.x,this.y,ps,0,Math.PI*2);
+        ctx.strokeStyle=`hsla(${(hue+w*50)%360},${sat}%,${light}%,${this.resonanceField*(.22-w*.05)})`;
+        ctx.lineWidth=1;ctx.stroke();
+      }
+    }
+  }
+  hit(mx,my){
+    const s=this.radius+this.evolutionLevel*2+6;
+    return distSq(mx,my,this.x,this.y)<s*s;
+  }
+  awaken(lv){
+    if(this.isAwakened)return;
+    this.isAwakened=true;gameState.nodesAwakened++;
+    gameState.loveEnergy+=10;gameState.steps++;
+    gameState.vibeFrequency=Math.min(gameState.vibeFrequency+5,100);
+    spawnRipple(this.x,this.y,this.colorShift%360);
+    this.connectNearby(lv);
+    initAudio();
+    updateAudioFromVibe();
+    updateStatus();
+    markHudDirty();
+  }
+  connectNearby(lv){
+    const r=lv.connectionRange,r2=r*r;
+    grid.query(this.x,this.y,r,other=>{
+      if(other===this||!other.isAwakened||this.connSet.has(other.id))return;
+      if(distSq(this.x,this.y,other.x,other.y)>r2)return;
+      this.connections.push(other);other.connections.push(this);
+      this.connSet.add(other.id);other.connSet.add(this.id);
+      const boost=.2*(1+currentLevelIndex*.5);
+      this.evolutionLevel+=boost;other.evolutionLevel+=boost;
+      const sync=.1*(1+currentLevelIndex*.3);
+      const avg=(this.loopPhase+other.loopPhase)/2;
+      this.loopPhase=avg+Math.PI*sync;
+      other.loopPhase=avg-Math.PI*sync;
+    });
+  }
+}
+
+class LoveParticle {
+  constructor(x,y){this.x=x;this.y=y;this.vx=(Math.random()-.5)*4;this.vy=(Math.random()-.5)*4;
+    this.life=1;this.decay=.025;this.size=2+Math.random()*2;this.hue=Math.random()*360}
+  update(dt){this.x+=this.vx*dt*60;this.y+=this.vy*dt*60;this.life-=this.decay*dt*60;
+    this.vx*=.98;this.vy*=.98;this.hue+=1.5*dt*60}
+  draw(){ctx.globalAlpha=Math.max(0,this.life);ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);
+    ctx.fillStyle=`hsl(${this.hue%360},80%,60%)`;ctx.fill();ctx.globalAlpha=1}
+  dead(){return this.life<=0}
+}
+
+const drawnPairs = new Set();
+function drawConnections(lv,q){
+  drawnPairs.clear();
+  const maxPulses = q>0.6?4:q>0.4?2:0;
+  for(const n of gameState.nodes){
+    if(!n.isAwakened)continue;
+    for(const o of n.connections){
+      const key=n.id<o.id?n.id+'-'+o.id:o.id+'-'+n.id;
+      if(drawnPairs.has(key))continue;
+      drawnPairs.add(key);
+      const hue=((n.colorShift+o.colorShift)/2+Math.sin(n.connectionPulse)*20)%360;
+      const avg=(n.evolutionLevel+o.evolutionLevel)/2;
+      const alpha=.35+avg*.08+Math.sin(n.connectionPulse)*.12;
+      ctx.beginPath();ctx.moveTo(n.x,n.y);ctx.lineTo(o.x,o.y);
+      ctx.strokeStyle=`hsla(${hue},78%,58%,${Math.max(.2,alpha)})`;
+      ctx.lineWidth=1+avg*.35;ctx.stroke();
+      if(maxPulses){
+        const dist=Math.sqrt(distSq(n.x,n.y,o.x,o.y));
+        const pulses=Math.min(maxPulses,Math.floor(dist/35)+1);
+        for(let p=0;p<pulses;p++){
+          const t=(p/pulses+n.connectionPulse*.08)%1;
+          const px=n.x+(o.x-n.x)*t, py=n.y+(o.y-n.y)*t;
+          ctx.beginPath();ctx.arc(px,py,1.5+avg*.4,0,Math.PI*2);
+          ctx.fillStyle=`hsla(${(hue+p*15)%360},90%,72%,${.55*(1-t)})`;ctx.fill();
+        }
+      }
+    }
+  }
+}
+
+function computeCoherence(){
+  const aw=gameState.nodes.filter(n=>n.isAwakened);
+  if(!aw.length)return 0;
+  let sum=0;
+  for(const n of aw){
+    const ph=(Math.abs(Math.sin(n.loopPhase))+Math.abs(Math.cos(n.loopPhase)))/2;
+    sum+=ph*Math.max(0,n.resonanceField);
+  }
+  return Math.min(1,(sum/aw.length)/(1+currentLevelIndex*.3));
+}
+
+function computeRhoY(){
+  const E=Math.max(1,gameState.steps+gameState.loveEnergy*.1);
+  const Y=gameState.coherence*gameState.vibeFrequency/100;
+  return (Y*1.372/E).toFixed(3);
+}
+
+let hudDirty=true;
+function markHudDirty(){hudDirty=true}
+
+function updateHUD(){
+  if(!hudDirty)return;
+  hudDirty=false;
+  const pct=Math.round(gameState.coherence*100);
+  ui.loveScore.textContent=gameState.loveEnergy;
+  ui.nodesAwakened.textContent=gameState.nodesAwakened;
+  ui.nodeTotal.textContent=gameState.nodes.length;
+  ui.coherencePct.textContent=pct+'%';
+  ui.currentLevel.textContent=gameState.level;
+  ui.gameStatus.textContent=gameState.status;
+  ui.vibeFill.style.width=gameState.vibeFrequency+'%';
+  ui.coherenceReadout.textContent=`COHERENCE ${pct}% · LOVE ${gameState.loveEnergy} · FLUX ${(gameState.loveFlux||0).toFixed(1)}/s`;
+  ui.eL2.textContent=Math.round(gameState.coherence*gameState.coherence*100);
+  ui.rhoY.textContent=computeRhoY();
+  ui.qualityPct.textContent=Math.round(gameState.quality*100);
+}
+
+function updateStatus(){
+  const lv=levels[currentLevelIndex];
+  const pct=gameState.nodesAwakened/Math.max(1,gameState.nodes.length)*100;
+  if(pct<25)gameState.status='AWAKENING: '+lv.description;
+  else if(pct<50)gameState.status='EXPANDING: '+lv.description;
+  else if(pct<75)gameState.status='CONNECTING: '+lv.description;
+  else gameState.status='TRANSCENDING: '+lv.description;
+}
+
+function initNodes(resetAwakened){
+  gameState.nodes=[];nodeIdSeq=0;
+  if(resetAwakened)gameState.nodesAwakened=0;
+  const lv=levels[currentLevelIndex];
+  for(let i=0;i<lv.nodeCount;i++){
+    gameState.nodes.push(new ConsciousnessNode(
+      Math.random()*(innerWidth-100)+50,
+      Math.random()*(innerHeight-100)+50));
+  }
+  gameState.status=lv.description;
+  markHudDirty();
+}
+
+function spawnParticles(x,y,n,hue){
+  const room=MAX_PARTICLES-gameState.particles.length;
+  const count=Math.min(n,room);
+  for(let i=0;i<count;i++){
+    const p=new LoveParticle(x,y);
+    if(hue!=null)p.hue=hue+Math.random()*50-25;
+    gameState.particles.push(p);
+  }
+}
+
+function loveBurst(x,y){
+  const now=performance.now();
+  if(now-lastBurst<BURST_MS)return;
+  lastBurst=now;
+  const hue=BURST_HUES[Math.floor(now/1000)%BURST_HUES.length];
+  spawnParticles(x,y,12,hue);
+  spawnRipple(x,y,hue);
+  const r2=6400;
+  const lv=levels[currentLevelIndex];
+  for(const n of gameState.nodes){
+    if(distSq(x,y,n.x,n.y)<r2){
+      n.awaken(lv);
+      if(n.isAwakened)n.evolutionLevel+=.04;
+    }
+  }
+  gameState.loveEnergy+=4;gameState.steps++;
+  initAudio();
+  updateAudioFromVibe();
+  markHudDirty();
+}
+
+function levelShiftEffect(){
+  bloomChord();
+  for(let i=0;i<6;i++){
+    spawnRipple(Math.random()*innerWidth,Math.random()*innerHeight,40+Math.random()*280);
+  }
+  [[50,50],[innerWidth-50,50],[50,innerHeight-50],[innerWidth-50,innerHeight-50]].forEach((c,i)=>{
+    setTimeout(()=>loveBurst(c[0],c[1]),i*200);
+  });
+  gameState.loveEnergy+=40;
+  gameState.vibeFrequency=Math.min(gameState.vibeFrequency+18,100);
+}
+
+function levelUp(){
+  if(currentLevelIndex>=levels.length-1)return;
+  currentLevelIndex++;
+  const lv=levels[currentLevelIndex];
+  gameState.level=lv.name;
+  gameState.status='LEVEL SHIFT';
+  for(const n of gameState.nodes){
+    if(n.isAwakened){
+      n.evolutionLevel+=1+currentLevelIndex*.4;
+      n.colorShift+=90;
+      n.loopPhase+=Math.PI*.4;
+    }
+  }
+  while(gameState.nodes.length<lv.nodeCount){
+    gameState.nodes.push(new ConsciousnessNode(Math.random()*(innerWidth-100)+50,Math.random()*(innerHeight-100)+50));
+  }
+  levelShiftEffect();
+  setTimeout(()=>{updateStatus();markHudDirty()},1800);
+  markHudDirty();
+}
+
+function checkProgress(){
+  const pct=gameState.nodesAwakened/gameState.nodes.length*100;
+  if(pct>=80&&currentLevelIndex<levels.length-1)levelUp();
+  else updateStatus();
+}
+
+let mx=innerWidth/2,my=innerHeight/2,space=false;
+
+function pointerPos(e){
+  const r=canvas.getBoundingClientRect();
+  return {x:e.clientX-r.left,y:e.clientY-r.top};
+}
+
+canvas.addEventListener('mousemove',e=>{const p=pointerPos(e);mx=p.x;my=p.y});
+canvas.addEventListener('click',e=>{
+  initAudio();
+  const {x,y}=pointerPos(e);
+  let hit=false;
+  const lv=levels[currentLevelIndex];
+  for(const n of gameState.nodes)if(n.hit(x,y)){n.awaken(lv);hit=true;checkProgress()}
+  if(!hit)spawnParticles(x,y,5);
+});
+canvas.addEventListener('touchstart',e=>{
+  e.preventDefault();initAudio();
+  const t=e.touches[0],r=canvas.getBoundingClientRect();
+  mx=t.clientX-r.left;my=t.clientY-r.top;space=true;
+  const lv=levels[currentLevelIndex];
+  for(const n of gameState.nodes)if(n.hit(mx,my)){n.awaken(lv);checkProgress()}
+},{passive:false});
+canvas.addEventListener('touchmove',e=>{
+  e.preventDefault();
+  const t=e.touches[0],r=canvas.getBoundingClientRect();
+  mx=t.clientX-r.left;my=t.clientY-r.top;
+},{passive:false});
+canvas.addEventListener('touchend',()=>{space=false});
+document.addEventListener('keydown',e=>{
+  if(e.code==='Space'){space=true;initAudio();e.preventDefault()}
+  if(e.code==='KeyL'){
+    levelUp();
+    let b=0;
+    const id=setInterval(()=>{
+      loveBurst(Math.random()*innerWidth,Math.random()*innerHeight);
+      if(++b>=8)clearInterval(id);
+    },160);
+  }
+  if(e.code==='KeyC'){initAudio();startCalibration()}
+});
+document.addEventListener('keyup',e=>{if(e.code==='Space')space=false});
+document.addEventListener('visibilitychange',()=>{running=!document.hidden});
+
+function startCalibration(){
+  if(gameState.calibration.active)return;
+  gameState.calibration={active:true,start:performance.now(),samples:[]};
+  gameState.calibrationMode=true;
+  const ov=document.createElement('div');ov.className='calibration-overlay';ov.id='calOv';
+  ov.textContent='Calibration 10s — hold steady';document.body.appendChild(ov);
+}
+
+function finishCalibration(){
+  const s=gameState.calibration.samples;
+  const mean=s.reduce((a,b)=>a+b,0)/Math.max(1,s.length);
+  const var_=s.reduce((a,b)=>a+(b-mean)**2,0)/Math.max(1,s.length);
+  gameState.calibration.active=false;
+  gameState.calibrationMode=false;
+  const ov=document.getElementById('calOv');
+  if(ov){
+    ov.innerHTML=`L²_C Complete<br/>Coherence ${Math.round(mean*100)}%<br/>Trust² σ² ${var_.toFixed(3)}<br/>Love Flux ${(gameState.loveFlux||0).toFixed(2)}/s<br/>h=${H_HUMILITY} · ρ_Y ${computeRhoY()}`;
+    setTimeout(()=>ov.remove(),3500);
+  }
+}
+
+let prev=performance.now();
+function loop(now){
+  requestAnimationFrame(loop);
+  if(!running){prev=now;return}
+  const dt=Math.min(.05,(now-prev)/1000);prev=now;
+  const frozen=gameState.calibrationMode;
+
+  if(gameState.calibration.active){
+    gameState.calibration.samples.push(computeCoherence());
+    if(now-gameState.calibration.start>=10000)finishCalibration();
+  }
+
+  gameState.coherence=computeCoherence();
+  const dE=gameState.loveEnergy-gameState.prevLoveEnergy;
+  gameState.loveFlux=dE/Math.max(dt,.001);
+  gameState.prevLoveEnergy=gameState.loveEnergy;
+
+  if(space)loveBurst(mx,my);
+
+  frameCount++;
+  if(now-lastFpsTime>=1000){
+    const fps=frameCount;frameCount=0;lastFpsTime=now;
+    ui.fps.textContent=fps;
+    gameState.quality=fps<38?0.35:fps<48?0.6:fps<56?0.8:1;
+    markHudDirty();
+  }
+
+  const lv=levels[currentLevelIndex];
+  grid.clear();
+  for(const n of gameState.nodes)grid.insert(n);
+  for(const n of gameState.nodes)n.update(lv,dt,frozen);
+
+  ctx.fillStyle='rgba(0,8,16,.17)';
+  ctx.fillRect(0,0,innerWidth,innerHeight);
+
+  drawRipples(dt);
+  drawConnections(lv,gameState.quality);
+  for(const n of gameState.nodes)n.draw(lv,gameState.quality);
+
+  let pi=0;
+  while(pi<gameState.particles.length){
+    const p=gameState.particles[pi];
+    p.update(dt);p.draw();
+    if(p.dead())gameState.particles[pi]=gameState.particles[--gameState.particles.length];
+    else pi++;
+  }
+
+  if(now-lastHud>100){lastHud=now;markHudDirty();updateHUD()}
+}
+
+gameState.level=levels[0].name;
+initNodes(true);
+markHudDirty();
+updateHUD();
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
