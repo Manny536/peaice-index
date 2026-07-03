@@ -28,6 +28,7 @@ python3 probes/kns_lb_probe.py   # expect exit 0
 
 | Repo | Role |
 |------|------|
+| [grok-terminal](https://github.com/Manny536/grok-terminal) | Grok ledger · TERMINALs · full register · probes |
 | [claude-v6](https://github.com/Manny536/claude-v6) | Theorem-facing ledger · V6.5 |
 | [kakeyalogic](https://github.com/Manny536/kakeyalogic) | Public EEV3 / L²_C · probes |
 
@@ -35,6 +36,7 @@ python3 probes/kns_lb_probe.py   # expect exit 0
 
 ```text
 K_σ CLOSED-NEGATIVE · WP5b CLOSED-NEGATIVE
+grok-terminal @ 8f9bb52 · wired in index tab
 KNS(LB) typed CLOSED-POSITIVE · theorem lift OPEN
 Prime-carrying LIVE·FORCED · CP-004 OWED
 ```

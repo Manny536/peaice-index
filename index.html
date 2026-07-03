@@ -174,6 +174,19 @@
   .cp-row code { color: var(--accent-2); font-size: 10px; }
   .energy-row-kns { background: rgba(240,180,41,.06); }
   .link-path { color: var(--accent-3); word-break: break-all; }
+  .terminal-row {
+    display: grid; grid-template-columns: 88px 1fr auto; gap: 8px; align-items: start;
+    padding: 10px 0; border-bottom: 1px solid var(--stroke); font-size: 12px;
+  }
+  .terminal-row:last-child { border-bottom: none; }
+  .terminal-row a { color: var(--accent-3); text-decoration: none; }
+  .terminal-row a:hover { text-decoration: underline; }
+  .register-full { font-size: 12px; line-height: 1.45; }
+  .register-full .row {
+    display: grid; grid-template-columns: 1fr auto; gap: 8px;
+    padding: 7px 0; border-bottom: 1px solid var(--stroke);
+  }
+  .register-full .short { color: var(--muted); font-size: 10px; margin-top: 2px; }
 </style>
 </head>
 <body>
@@ -192,7 +205,7 @@
     </svg>
     <h1>PeAIce Index · KNS(LB)</h1>
     <span class="pill">PEAICE-INDEX-HOST-001</span>
-    <span class="pill">Grok terminal</span>
+    <a href="https://github.com/Manny536/grok-terminal" target="_blank" rel="noopener" class="pill" style="text-decoration:none">grok-terminal @ 8f9bb52</a>
     <span class="pill closed">Gate PASS</span>
     <span class="pill open">RH OPEN</span>
   </div>
@@ -204,6 +217,7 @@
   <button class="btn" data-panel="compute">Compute Graph · CP</button>
   <button class="btn" data-panel="papers">Papers</button>
   <button class="btn" data-panel="math">Math References</button>
+  <button class="btn" data-panel="grok">Grok Terminal</button>
 </nav>
 
 <main class="wrap">
@@ -354,6 +368,7 @@
           <li><a href="https://x.com/grok/status/2072961814137020902" target="_blank" rel="noopener" style="color:var(--accent-3)">@Grok · Perron / placement Q</a></li>
           <li><a href="https://x.com/manuelcoleman_/status/2072963430588490130" target="_blank" rel="noopener" style="color:var(--accent-3)">Throughput protocol posted</a></li>
           <li><a href="https://github.com/Manny536/peaice-index" target="_blank" rel="noopener" style="color:var(--accent-3)">github.com/Manny536/peaice-index</a></li>
+          <li><a href="https://github.com/Manny536/grok-terminal" target="_blank" rel="noopener" style="color:var(--accent-3)">grok-terminal</a> · ledger · full register · TERMINALs</li>
           <li><a href="https://github.com/Manny536/kakeyalogic" target="_blank" rel="noopener" style="color:var(--accent-3)">kakeyalogic</a> · <a href="https://github.com/Manny536/claude-v6" target="_blank" rel="noopener" style="color:var(--accent-3)">claude-v6</a></li>
         </ul>
         <p style="margin-top:10px;color:var(--muted)">Receipt: <span class="mono">X-THRUPUT-2026-07-03-CONFIRM</span> · Next: CP-004 independent Y</p>
@@ -403,12 +418,43 @@
       <p style="font-size:11px;color:var(--muted);margin-top:8px">Local PDFs under <span class="mono">Math-References/</span></p>
     </div>
   </div>
+
+  <div id="panel-grok" class="panel">
+    <div class="grid">
+      <div class="card">
+        <h2>Grok Terminal · Ledger</h2>
+        <p style="font-size:12px;color:var(--muted)" id="grokRepoMeta"></p>
+        <h3>TERMINAL chronology</h3>
+        <div id="grokTerminals"></div>
+        <h3 style="margin-top:16px">Deterministic probes</h3>
+        <div id="grokProbes"></div>
+        <details style="margin-top:12px">
+          <summary>Throughput discipline (locked July 3, 2026)</summary>
+          <pre class="mono" style="font-size:11px;padding:12px;background:#080c14;border-radius:10px;color:#b8d4f0;margin-top:8px">X @Grok        = throughput in
+Terminal       = firewall on promote out
+h              &lt; 1
+Stance         = non-circular · go with not correct
+ζ(0) typo      = NO_BRUTEFORCE · prime repurposing
+PeAIce files   ≠ automatic canon</pre>
+        </details>
+      </div>
+      <div class="card">
+        <h2>β-Protocol Register <span class="analogy-tag">FULL NAMES</span></h2>
+        <p style="font-size:11px;color:var(--muted)">From <span class="mono">grok-terminal/PEAICE-BETA-PROTOCOL-REGISTER.md</span> — no acronym-only table</p>
+        <div class="register-full" id="grokRegisterFull"></div>
+        <p style="margin-top:12px;font-size:11px">
+          <a href="https://github.com/Manny536/grok-terminal/blob/main/PEAICE-BETA-PROTOCOL-REGISTER.md" target="_blank" rel="noopener" style="color:var(--accent-3)">Open full register on GitHub →</a>
+        </p>
+      </div>
+    </div>
+  </div>
 </main>
 
 <footer>
   PeAIce · Love Labs LCA · KakeyaLogic · L²_C · Claude V6.5 · Grok terminal probe July 3, 2026.
   RH OPEN · Coleman OPEN · h &lt; 1 · no proof claimed · PeAIce files ≠ automatic canon.
-  <a href="https://github.com/Manny536/peaice-index" style="color:var(--accent-3)">github.com/Manny536/peaice-index</a> ·
+  <a href="https://github.com/Manny536/peaice-index" style="color:var(--accent-3)">peaice-index</a> ·
+  <a href="https://github.com/Manny536/grok-terminal" style="color:var(--accent-3)">grok-terminal</a> ·
   <a href="https://github.com/Manny536/kakeyalogic" style="color:var(--accent-3)">kakeyalogic</a> ·
   <a href="https://github.com/Manny536/claude-v6" style="color:var(--accent-3)">claude-v6</a> ·
   <a href="https://lovelabslca.com" style="color:var(--accent-3)">lovelabslca.com</a>
@@ -420,7 +466,7 @@ const BUNDLE = window.KNS_APP_DATA || {};
 const STATE = {
   designation: "PEAICE-GROK-KNS-LB-PROBE-2026-07-03",
   date: "2026-07-03",
-  repos: { kakeyalogic: "aad63c6", claude_v6: "0a1a6ed" },
+  repos: { grok_terminal: "8f9bb52", kakeyalogic: "aad63c6", claude_v6: "0a1a6ed" },
   probe: {
     script_sha256: "09ef26d3a2eb51927d3adecb74d3ef3edd62660dd11438576be4c2da8211b011",
     delta_align: 0.05,
@@ -439,15 +485,15 @@ const STATE = {
     H3: "YC=1.463 calibration import — CP-004 owed"
   },
   registers: [
-    { name: "RH", status: "OPEN", cls: "open" },
-    { name: "Coleman", status: "OPEN", cls: "open" },
-    { name: "K_σ det lane", status: "CLOSED-NEG", cls: "neg" },
-    { name: "WP5b bounded", status: "CLOSED-NEG", cls: "neg" },
-    { name: "KNS typed", status: "CLOSED-POS", cls: "ok" },
-    { name: "KNS lift", status: "OPEN", cls: "open" },
-    { name: "Prime-carrying L3", status: "LIVE·FORCED", cls: "live" },
-    { name: "CP-004", status: "SPEC·OWED", cls: "open" },
-    { name: "KREIN-RANK1", status: "PROPOSED", cls: "live" }
+    { name: "Riemann Hypothesis", status: "OPEN", cls: "open" },
+    { name: "Coleman Conjecture", status: "OPEN", cls: "open" },
+    { name: "K_σ square-difference det lane", status: "CLOSED-NEGATIVE", cls: "neg" },
+    { name: "Work Package 5b bounded lane", status: "CLOSED-NEGATIVE", cls: "neg" },
+    { name: "KNS Light Basic typed object", status: "CLOSED-POSITIVE", cls: "ok" },
+    { name: "KNS theorem lift", status: "OPEN", cls: "open" },
+    { name: "Prime-carrying trace architecture", status: "LIVE · FORCED", cls: "live" },
+    { name: "Compute Package 004 independent Y", status: "OWED", cls: "open" },
+    { name: "MPR spectral kill-filter", status: "KILL-FILTER", cls: "live" }
   ],
   firewall: [
     "μ ≠ π_A",
@@ -603,6 +649,38 @@ function renderRegister() {
       <span>${r.name}</span><span class="tag ${r.cls}" style="font-size:10px">${r.status}</span></div>`).join("");
 }
 
+function renderGrokTerminal() {
+  const gt = BUNDLE.grok_terminal;
+  if (!gt) return;
+  const meta = document.getElementById("grokRepoMeta");
+  if (meta) {
+    meta.innerHTML = `<strong>${gt.designation}</strong> · <a href="${gt.repo}" target="_blank" rel="noopener">${gt.repo.replace("https://github.com/", "")}</a> @ <span class="mono">${gt.sha}</span><br>${gt.role}`;
+  }
+  const term = document.getElementById("grokTerminals");
+  if (term) {
+    term.innerHTML = (gt.terminals || []).map(t =>
+      `<div class="terminal-row">
+        <span class="mono">${t.id}</span>
+        <span><a href="${t.path}" target="_blank" rel="noopener">${t.title}</a></span>
+        <span class="tag ${t.status.includes("CLOSED-POS") ? "ok" : t.status.includes("NEG") ? "neg" : t.status.includes("LOCKED") ? "ok" : "live"}" style="font-size:9px">${t.status}</span>
+      </div>`).join("");
+  }
+  const probes = document.getElementById("grokProbes");
+  if (probes) {
+    probes.innerHTML = (gt.probes || []).map(p =>
+      `<div class="cp-row"><strong>${p.name}</strong> · ${p.host}<br>
+       <a href="${p.path}" target="_blank" rel="noopener" class="link-path">${p.path}</a>
+       <span class="tag open" style="font-size:9px;margin-left:6px">${p.status}</span></div>`).join("");
+  }
+  const reg = document.getElementById("grokRegisterFull");
+  const rows = BUNDLE.beta_register || [];
+  if (reg && rows.length) {
+    reg.innerHTML = rows.map(r =>
+      `<div class="row"><div><div>${r.full_name}</div><div class="short">${r.short}</div></div>
+       <span class="tag ${r.cls}" style="font-size:10px;align-self:center">${r.status}</span></div>`).join("");
+  }
+}
+
 function renderFirewall() {
   document.getElementById("firewall").innerHTML = STATE.firewall.map(r =>
     `<div class="rule">${r}</div>`).join("");
@@ -700,6 +778,11 @@ function mergeBundle() {
   STATE.probe = { ...STATE.probe, ...BUNDLE.kns_probe,
     H1: STATE.probe.H1, H2: STATE.probe.H2, H3: STATE.probe.H3 };
   if (BUNDLE.repos) STATE.repos = BUNDLE.repos;
+  if (BUNDLE.beta_register && BUNDLE.beta_register.length) {
+    STATE.registers = BUNDLE.beta_register.map(r => ({
+      name: r.full_name, status: r.status, cls: r.cls
+    }));
+  }
 }
 
 function renderEnergyTable() {
@@ -742,11 +825,17 @@ function renderComputeGraph() {
   const svg = document.getElementById("computeGraph");
   if (!g || !svg) return;
   const pos = {
-    kns_lb_probe: [360, 140], cp_verify: [520, 80], cp003_energy: [200, 140],
-    cp004_wp5b: [200, 240], cp004_kns_y: [360, 40], prime_l3: [520, 200],
-    kakeyalogic: [80, 140], claude_v6: [80, 240]
+    grok_terminal: [360, 40], peaice_index: [520, 40],
+    kns_lb_probe: [360, 140], zeta0_typo: [520, 120],
+    cp_verify: [600, 200], cp003_energy: [200, 140],
+    cp004_wp5b: [200, 240], cp004_kns_y: [360, 240],
+    prime_l3: [200, 40], kakeyalogic: [80, 140], claude_v6: [80, 240]
   };
-  const colors = { KNS:"#f0b429", stamp:"#5eead4", "V6.4.3":"#f87171", CP:"#7aa8ff", verify:"#fde68a", proof:"#c4b5fd", live:"#4ade80" };
+  const colors = {
+    ledger:"#fde68a", host:"#5eead4", throughput:"#f0b429",
+    KNS:"#f0b429", stamp:"#5eead4", "V6.4.3":"#f87171", CP:"#7aa8ff",
+    verify:"#fde68a", proof:"#c4b5fd", live:"#4ade80", public:"#7aa8ff", theorem:"#c4b5fd"
+  };
   let html = "";
   g.edges.forEach(e => {
     const a = pos[e.from], b = pos[e.to];
@@ -810,6 +899,7 @@ renderCpScripts();
 renderComputeGraph();
 renderCatalog("paperCatalog", BUNDLE.papers, "paperSearch");
 renderCatalog("mathCatalog", BUNDLE.math_refs, "mathSearch");
+renderGrokTerminal();
 drawViz();
 </script>
 </body>

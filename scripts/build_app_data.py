@@ -56,22 +56,92 @@ def cp003_energy_table(kns: dict) -> list[dict]:
     ]
 
 
+def grok_terminal_bundle() -> dict:
+    gh = "https://github.com/Manny536/grok-terminal"
+    blob = f"{gh}/blob/main"
+    return {
+        "repo": gh,
+        "sha": "8f9bb52",
+        "designation": "PEAICE-GROK-TERMINAL-REPO-001",
+        "role": "Grok terminal ledger · cross-derivation · TERMINAL extraction",
+        "terminals": [
+            {"id": "TERMINAL-002", "title": "Prime-carrying trace route", "path": f"{blob}/PEAICE-GROK-TERMINAL-002_Prime-Carrying_Trace_Route.md", "status": "LIVE · FORCED"},
+            {"id": "TERMINAL-004", "title": "Work Package 5b bounded lane findings", "path": f"{blob}/PEAICE-GROK-TERMINAL-004_Fable5-WP5B-Findings.md", "status": "CLOSED-NEGATIVE"},
+            {"id": "TERMINAL-005", "title": "KNS(LB) pass cross-derivation", "path": f"{blob}/PEAICE-GROK-TERMINAL-005_KNS-LB-Findings.md", "status": "CLOSED-POSITIVE"},
+            {"id": "X-THRUPUT", "title": "X @Grok throughput receipt", "path": f"{blob}/PEAICE-GROK-X-THRUPUT-2026-07-03.md", "status": "LOCKED"},
+            {"id": "ZETA0-TYPO", "title": "ζ(0) typo-throughput protocol", "path": f"{blob}/PEAICE-GROK-ZETA0-TYPO-THRUPUT-001.md", "status": "LOCKED"},
+        ],
+        "probes": [
+            {"name": "kns_lb_probe.py", "path": f"{blob}/KNS-LB/kns_lb_probe.py", "host": "grok-terminal + peaice-index", "status": "VERIFIED"},
+            {"name": "zeta0_typo_thruput.py", "path": f"{blob}/probes/zeta0_typo_thruput.py", "host": "grok-terminal", "status": "LIVE"},
+            {"name": "verify_probes.py", "path": f"{blob}/scripts/verify_probes.py", "host": "grok-terminal", "status": "stamp"},
+        ],
+        "register_path": f"{blob}/PEAICE-BETA-PROTOCOL-REGISTER.md",
+        "index_path": f"{blob}/INDEX.md",
+    }
+
+
+def beta_register_full() -> list[dict]:
+    """Full-name β-protocol register for hosted index (not acronym-only)."""
+    cls_map = {
+        "OPEN": "open", "CLOSED-POSITIVE": "ok", "CLOSED-NEGATIVE": "neg",
+        "LIVE": "live", "LIVE · FORCED": "live", "KILL-FILTER": "live",
+        "LOCKED": "ok", "OWED": "open", "REGISTERED": "ok",
+        "NON-COMPUTABLE": "neg", "PROPOSED-FOR-CANON": "live", "< 1": "ok",
+    }
+    rows = [
+        ("Riemann Hypothesis", "RH", "OPEN"),
+        ("Coleman Conjecture", "Coleman", "OPEN"),
+        ("K_σ square-difference determinant lane", "K_σ det", "CLOSED-NEGATIVE"),
+        ("Work Package 5b bounded relative-determinant lane", "WP5b", "CLOSED-NEGATIVE"),
+        ("Work Package 5c unbounded u-flow corridor", "WP5c", "LIVE"),
+        ("Prime-carrying trace architecture (Layer 3)", "Prime L3", "LIVE · FORCED"),
+        ("Kakeya Needle Set Light Basic typed object", "KNS(LB)", "CLOSED-POSITIVE"),
+        ("KNS theorem lift (zeros · RH · det_ζ)", "KNS lift", "OPEN"),
+        ("Multiplicative Phase Recognition spectral kill-filter", "MPR", "KILL-FILTER"),
+        ("Multiplicative Phase Recognition multimodal variant", "MPR-mm", "NON-COMPUTABLE"),
+        ("Compute Package 004 independent Y measurement", "CP-004", "OWED"),
+        ("X @Grok throughput protocol", "X throughput", "LOCKED"),
+        ("ζ(0) typo-throughput protocol", "ζ(0) typo", "LOCKED"),
+        ("Evaluator humility factor", "h", "< 1"),
+        ("World Model star probe", "WM*", "OPEN"),
+        ("Krein rank-one spectral-shift wall face", "KREIN-RANK1", "PROPOSED-FOR-CANON"),
+    ]
+    return [
+        {
+            "full_name": full,
+            "short": short,
+            "status": status,
+            "cls": cls_map.get(status, "open"),
+        }
+        for full, short, status in rows
+    ]
+
+
 def compute_graph() -> dict:
     return {
         "nodes": [
+            {"id": "grok_terminal", "label": "grok-terminal", "lane": "ledger", "status": "LIVE"},
             {"id": "kns_lb_probe", "label": "kns_lb_probe.py", "lane": "KNS", "status": "CLOSED-POS"},
+            {"id": "zeta0_typo", "label": "zeta0_typo_thruput", "lane": "throughput", "status": "LOCKED"},
             {"id": "cp_verify", "label": "cp_verify.py", "lane": "stamp", "status": "LIVE"},
             {"id": "cp003_energy", "label": "CP-003 energy-yield", "lane": "E_gov", "status": "REGISTERED"},
             {"id": "cp004_wp5b", "label": "CP-004 WP5b", "lane": "WP5b", "status": "CLOSED-NEG"},
             {"id": "kakeyalogic", "label": "kakeyalogic", "lane": "public", "status": "EEV3"},
             {"id": "claude_v6", "label": "claude-v6", "lane": "theorem", "status": "V6.5"},
+            {"id": "peaice_index", "label": "peaice-index", "lane": "host", "status": "HOST"},
             {"id": "prime_l3", "label": "Prime-carrying L3", "lane": "live", "status": "FORCED"},
             {"id": "cp004_kns_y", "label": "CP-004 KNS Y", "lane": "verify", "status": "OWED"},
         ],
         "edges": [
+            {"from": "grok_terminal", "to": "kns_lb_probe", "label": "TERMINAL-005"},
+            {"from": "grok_terminal", "to": "zeta0_typo", "label": "ζ(0) typo"},
+            {"from": "grok_terminal", "to": "prime_l3", "label": "TERMINAL-002"},
+            {"from": "peaice_index", "to": "grok_terminal", "label": "wired"},
+            {"from": "peaice_index", "to": "kns_lb_probe", "label": "hosted probe"},
             {"from": "kns_lb_probe", "to": "cp003_energy", "label": "H2 · H3"},
             {"from": "kns_lb_probe", "to": "cp_verify", "label": "stamp"},
-            {"from": "kakeyalogic", "to": "kns_lb_probe", "label": "probe host"},
+            {"from": "kakeyalogic", "to": "kns_lb_probe", "label": "probe mirror"},
             {"from": "claude_v6", "to": "cp004_wp5b", "label": "Theorem H"},
             {"from": "kns_lb_probe", "to": "prime_l3", "label": "KREIN seam"},
             {"from": "cp004_kns_y", "to": "kns_lb_probe", "label": "independent Y"},
@@ -91,6 +161,14 @@ def papers_catalog() -> list[dict]:
         {"title": "Claude V6 README", "path": f"{gh}/claude-v6", "lane": "theorem", "status": "V6.5"},
         {"title": "KakeyaLogic README", "path": f"{gh}/kakeyalogic", "lane": "public", "status": "EEV3"},
         {"title": "peaice-index (this site)", "path": f"{gh}/peaice-index", "lane": "index", "status": "HOST"},
+        {"title": "grok-terminal README", "path": f"{gh}/grok-terminal", "lane": "Grok", "status": "LEDGER"},
+        {"title": "Grok terminal INDEX", "path": f"{gh}/grok-terminal/blob/main/INDEX.md", "lane": "Grok", "status": "MAP"},
+        {"title": "β-protocol register (full names)", "path": f"{gh}/grok-terminal/blob/main/PEAICE-BETA-PROTOCOL-REGISTER.md", "lane": "register", "status": "FULL"},
+        {"title": "TERMINAL-005 KNS(LB) findings", "path": f"{gh}/grok-terminal/blob/main/PEAICE-GROK-TERMINAL-005_KNS-LB-Findings.md", "lane": "TERMINAL", "status": "005"},
+        {"title": "X throughput receipt (md)", "path": f"{gh}/grok-terminal/blob/main/PEAICE-GROK-X-THRUPUT-2026-07-03.md", "lane": "X", "status": "LOCKED"},
+        {"title": "ζ(0) typo-throughput spec", "path": f"{gh}/grok-terminal/blob/main/PEAICE-GROK-ZETA0-TYPO-THRUPUT-001.md", "lane": "throughput", "status": "LOCKED"},
+        {"title": "zeta0_typo_thruput.py", "path": f"{gh}/grok-terminal/blob/main/probes/zeta0_typo_thruput.py", "lane": "probe", "status": "LIVE"},
+        {"title": "KNS probe receipt", "path": f"{gh}/grok-terminal/blob/main/PEAICE-GROK-KNS-LB-PROBE-2026-07-03.md", "lane": "KNS", "status": "RECEIPT"},
         {"title": "X throughput receipt (Bingo)", "path": "https://x.com/grok/status/2072963608183500863", "lane": "X", "status": "THRUPUT"},
         {"title": "X thread root (@manuelcoleman_)", "path": "https://x.com/manuelcoleman_/status/2072960669729841307", "lane": "X", "status": "PROBE"},
         {"title": "lovelabslca.com", "path": "https://lovelabslca.com", "lane": "web", "status": "public map"},
@@ -137,7 +215,14 @@ def build() -> dict:
         "built_at": datetime.now(timezone.utc).isoformat(),
         "site": "peaice-index · GitHub Pages",
         "designation": "PEAICE-INDEX-HOST-001",
-        "repos": {"kakeyalogic": "aad63c6", "claude_v6": "0a1a6ed", "peaice_index": "HEAD"},
+        "repos": {
+            "grok_terminal": "8f9bb52",
+            "kakeyalogic": "aad63c6",
+            "claude_v6": "0a1a6ed",
+            "peaice_index": "HEAD",
+        },
+        "grok_terminal": grok_terminal_bundle(),
+        "beta_register": beta_register_full(),
         "kns_probe": kns,
         "cp004_wp5b": {"tag": "NUMERICS | see claude-v6 WP5b closure", "status": "CLOSED-NEGATIVE"},
         "cp003_energy_table": cp003_energy_table(kns),

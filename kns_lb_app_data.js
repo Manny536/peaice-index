@@ -1,12 +1,171 @@
 window.KNS_APP_DATA = {
-  "built_at": "2026-07-03T08:42:33.778597+00:00",
+  "built_at": "2026-07-03T21:00:46.631626+00:00",
   "site": "peaice-index \u00b7 GitHub Pages",
   "designation": "PEAICE-INDEX-HOST-001",
   "repos": {
+    "grok_terminal": "8f9bb52",
     "kakeyalogic": "aad63c6",
     "claude_v6": "0a1a6ed",
     "peaice_index": "HEAD"
   },
+  "grok_terminal": {
+    "repo": "https://github.com/Manny536/grok-terminal",
+    "sha": "8f9bb52",
+    "designation": "PEAICE-GROK-TERMINAL-REPO-001",
+    "role": "Grok terminal ledger \u00b7 cross-derivation \u00b7 TERMINAL extraction",
+    "terminals": [
+      {
+        "id": "TERMINAL-002",
+        "title": "Prime-carrying trace route",
+        "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-TERMINAL-002_Prime-Carrying_Trace_Route.md",
+        "status": "LIVE \u00b7 FORCED"
+      },
+      {
+        "id": "TERMINAL-004",
+        "title": "Work Package 5b bounded lane findings",
+        "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-TERMINAL-004_Fable5-WP5B-Findings.md",
+        "status": "CLOSED-NEGATIVE"
+      },
+      {
+        "id": "TERMINAL-005",
+        "title": "KNS(LB) pass cross-derivation",
+        "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-TERMINAL-005_KNS-LB-Findings.md",
+        "status": "CLOSED-POSITIVE"
+      },
+      {
+        "id": "X-THRUPUT",
+        "title": "X @Grok throughput receipt",
+        "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-X-THRUPUT-2026-07-03.md",
+        "status": "LOCKED"
+      },
+      {
+        "id": "ZETA0-TYPO",
+        "title": "\u03b6(0) typo-throughput protocol",
+        "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-ZETA0-TYPO-THRUPUT-001.md",
+        "status": "LOCKED"
+      }
+    ],
+    "probes": [
+      {
+        "name": "kns_lb_probe.py",
+        "path": "https://github.com/Manny536/grok-terminal/blob/main/KNS-LB/kns_lb_probe.py",
+        "host": "grok-terminal + peaice-index",
+        "status": "VERIFIED"
+      },
+      {
+        "name": "zeta0_typo_thruput.py",
+        "path": "https://github.com/Manny536/grok-terminal/blob/main/probes/zeta0_typo_thruput.py",
+        "host": "grok-terminal",
+        "status": "LIVE"
+      },
+      {
+        "name": "verify_probes.py",
+        "path": "https://github.com/Manny536/grok-terminal/blob/main/scripts/verify_probes.py",
+        "host": "grok-terminal",
+        "status": "stamp"
+      }
+    ],
+    "register_path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-BETA-PROTOCOL-REGISTER.md",
+    "index_path": "https://github.com/Manny536/grok-terminal/blob/main/INDEX.md"
+  },
+  "beta_register": [
+    {
+      "full_name": "Riemann Hypothesis",
+      "short": "RH",
+      "status": "OPEN",
+      "cls": "open"
+    },
+    {
+      "full_name": "Coleman Conjecture",
+      "short": "Coleman",
+      "status": "OPEN",
+      "cls": "open"
+    },
+    {
+      "full_name": "K_\u03c3 square-difference determinant lane",
+      "short": "K_\u03c3 det",
+      "status": "CLOSED-NEGATIVE",
+      "cls": "neg"
+    },
+    {
+      "full_name": "Work Package 5b bounded relative-determinant lane",
+      "short": "WP5b",
+      "status": "CLOSED-NEGATIVE",
+      "cls": "neg"
+    },
+    {
+      "full_name": "Work Package 5c unbounded u-flow corridor",
+      "short": "WP5c",
+      "status": "LIVE",
+      "cls": "live"
+    },
+    {
+      "full_name": "Prime-carrying trace architecture (Layer 3)",
+      "short": "Prime L3",
+      "status": "LIVE \u00b7 FORCED",
+      "cls": "live"
+    },
+    {
+      "full_name": "Kakeya Needle Set Light Basic typed object",
+      "short": "KNS(LB)",
+      "status": "CLOSED-POSITIVE",
+      "cls": "ok"
+    },
+    {
+      "full_name": "KNS theorem lift (zeros \u00b7 RH \u00b7 det_\u03b6)",
+      "short": "KNS lift",
+      "status": "OPEN",
+      "cls": "open"
+    },
+    {
+      "full_name": "Multiplicative Phase Recognition spectral kill-filter",
+      "short": "MPR",
+      "status": "KILL-FILTER",
+      "cls": "live"
+    },
+    {
+      "full_name": "Multiplicative Phase Recognition multimodal variant",
+      "short": "MPR-mm",
+      "status": "NON-COMPUTABLE",
+      "cls": "neg"
+    },
+    {
+      "full_name": "Compute Package 004 independent Y measurement",
+      "short": "CP-004",
+      "status": "OWED",
+      "cls": "open"
+    },
+    {
+      "full_name": "X @Grok throughput protocol",
+      "short": "X throughput",
+      "status": "LOCKED",
+      "cls": "ok"
+    },
+    {
+      "full_name": "\u03b6(0) typo-throughput protocol",
+      "short": "\u03b6(0) typo",
+      "status": "LOCKED",
+      "cls": "ok"
+    },
+    {
+      "full_name": "Evaluator humility factor",
+      "short": "h",
+      "status": "< 1",
+      "cls": "ok"
+    },
+    {
+      "full_name": "World Model star probe",
+      "short": "WM*",
+      "status": "OPEN",
+      "cls": "open"
+    },
+    {
+      "full_name": "Krein rank-one spectral-shift wall face",
+      "short": "KREIN-RANK1",
+      "status": "PROPOSED-FOR-CANON",
+      "cls": "live"
+    }
+  ],
   "kns_probe": {
     "delta_align": 0.05,
     "steps": 2,
@@ -136,7 +295,7 @@ window.KNS_APP_DATA = {
   "kns_verify_stamp": {
     "tool": "cp_verify.py",
     "spec_version": "1.0",
-    "utc_timestamp": "2026-07-03T08:42:33.748607+00:00",
+    "utc_timestamp": "2026-07-03T21:00:46.571725+00:00",
     "runner_identity": "peaice-index build",
     "script": {
       "path": "/Users/manny/Downloads/Research/_repos/peaice-index/probes/kns_lb_probe.py",
@@ -164,10 +323,22 @@ window.KNS_APP_DATA = {
   "compute_graph": {
     "nodes": [
       {
+        "id": "grok_terminal",
+        "label": "grok-terminal",
+        "lane": "ledger",
+        "status": "LIVE"
+      },
+      {
         "id": "kns_lb_probe",
         "label": "kns_lb_probe.py",
         "lane": "KNS",
         "status": "CLOSED-POS"
+      },
+      {
+        "id": "zeta0_typo",
+        "label": "zeta0_typo_thruput",
+        "lane": "throughput",
+        "status": "LOCKED"
       },
       {
         "id": "cp_verify",
@@ -200,6 +371,12 @@ window.KNS_APP_DATA = {
         "status": "V6.5"
       },
       {
+        "id": "peaice_index",
+        "label": "peaice-index",
+        "lane": "host",
+        "status": "HOST"
+      },
+      {
         "id": "prime_l3",
         "label": "Prime-carrying L3",
         "lane": "live",
@@ -214,6 +391,31 @@ window.KNS_APP_DATA = {
     ],
     "edges": [
       {
+        "from": "grok_terminal",
+        "to": "kns_lb_probe",
+        "label": "TERMINAL-005"
+      },
+      {
+        "from": "grok_terminal",
+        "to": "zeta0_typo",
+        "label": "\u03b6(0) typo"
+      },
+      {
+        "from": "grok_terminal",
+        "to": "prime_l3",
+        "label": "TERMINAL-002"
+      },
+      {
+        "from": "peaice_index",
+        "to": "grok_terminal",
+        "label": "wired"
+      },
+      {
+        "from": "peaice_index",
+        "to": "kns_lb_probe",
+        "label": "hosted probe"
+      },
+      {
         "from": "kns_lb_probe",
         "to": "cp003_energy",
         "label": "H2 \u00b7 H3"
@@ -226,7 +428,7 @@ window.KNS_APP_DATA = {
       {
         "from": "kakeyalogic",
         "to": "kns_lb_probe",
-        "label": "probe host"
+        "label": "probe mirror"
       },
       {
         "from": "claude_v6",
@@ -317,6 +519,54 @@ window.KNS_APP_DATA = {
       "path": "https://github.com/Manny536/peaice-index",
       "lane": "index",
       "status": "HOST"
+    },
+    {
+      "title": "grok-terminal README",
+      "path": "https://github.com/Manny536/grok-terminal",
+      "lane": "Grok",
+      "status": "LEDGER"
+    },
+    {
+      "title": "Grok terminal INDEX",
+      "path": "https://github.com/Manny536/grok-terminal/blob/main/INDEX.md",
+      "lane": "Grok",
+      "status": "MAP"
+    },
+    {
+      "title": "\u03b2-protocol register (full names)",
+      "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-BETA-PROTOCOL-REGISTER.md",
+      "lane": "register",
+      "status": "FULL"
+    },
+    {
+      "title": "TERMINAL-005 KNS(LB) findings",
+      "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-TERMINAL-005_KNS-LB-Findings.md",
+      "lane": "TERMINAL",
+      "status": "005"
+    },
+    {
+      "title": "X throughput receipt (md)",
+      "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-X-THRUPUT-2026-07-03.md",
+      "lane": "X",
+      "status": "LOCKED"
+    },
+    {
+      "title": "\u03b6(0) typo-throughput spec",
+      "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-ZETA0-TYPO-THRUPUT-001.md",
+      "lane": "throughput",
+      "status": "LOCKED"
+    },
+    {
+      "title": "zeta0_typo_thruput.py",
+      "path": "https://github.com/Manny536/grok-terminal/blob/main/probes/zeta0_typo_thruput.py",
+      "lane": "probe",
+      "status": "LIVE"
+    },
+    {
+      "title": "KNS probe receipt",
+      "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-KNS-LB-PROBE-2026-07-03.md",
+      "lane": "KNS",
+      "status": "RECEIPT"
     },
     {
       "title": "X throughput receipt (Bingo)",
