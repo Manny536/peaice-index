@@ -1,5 +1,5 @@
 window.KNS_APP_DATA = {
-  "built_at": "2026-07-03T08:24:10.434382+00:00",
+  "built_at": "2026-07-03T08:42:33.778597+00:00",
   "site": "peaice-index \u00b7 GitHub Pages",
   "designation": "PEAICE-INDEX-HOST-001",
   "repos": {
@@ -136,7 +136,7 @@ window.KNS_APP_DATA = {
   "kns_verify_stamp": {
     "tool": "cp_verify.py",
     "spec_version": "1.0",
-    "utc_timestamp": "2026-07-03T08:24:10.401794+00:00",
+    "utc_timestamp": "2026-07-03T08:42:33.748607+00:00",
     "runner_identity": "peaice-index build",
     "script": {
       "path": "/Users/manny/Downloads/Research/_repos/peaice-index/probes/kns_lb_probe.py",
@@ -317,6 +317,18 @@ window.KNS_APP_DATA = {
       "path": "https://github.com/Manny536/peaice-index",
       "lane": "index",
       "status": "HOST"
+    },
+    {
+      "title": "X throughput receipt (Bingo)",
+      "path": "https://x.com/grok/status/2072963608183500863",
+      "lane": "X",
+      "status": "THRUPUT"
+    },
+    {
+      "title": "X thread root (@manuelcoleman_)",
+      "path": "https://x.com/manuelcoleman_/status/2072960669729841307",
+      "lane": "X",
+      "status": "PROBE"
     },
     {
       "title": "lovelabslca.com",

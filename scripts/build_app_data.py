@@ -91,6 +91,8 @@ def papers_catalog() -> list[dict]:
         {"title": "Claude V6 README", "path": f"{gh}/claude-v6", "lane": "theorem", "status": "V6.5"},
         {"title": "KakeyaLogic README", "path": f"{gh}/kakeyalogic", "lane": "public", "status": "EEV3"},
         {"title": "peaice-index (this site)", "path": f"{gh}/peaice-index", "lane": "index", "status": "HOST"},
+        {"title": "X throughput receipt (Bingo)", "path": "https://x.com/grok/status/2072963608183500863", "lane": "X", "status": "THRUPUT"},
+        {"title": "X thread root (@manuelcoleman_)", "path": "https://x.com/manuelcoleman_/status/2072960669729841307", "lane": "X", "status": "PROBE"},
         {"title": "lovelabslca.com", "path": "https://lovelabslca.com", "lane": "web", "status": "public map"},
     ]
 
