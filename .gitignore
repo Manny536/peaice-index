@@ -1,0 +1,5 @@
+_build_stamp.json
+.DS_Store
+__pycache__/
+*.pyc
+.venv/

@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PeAIce Index · KNS(LB) Light Thought-Probe</title>
+<style>
+  :root {
+    --bg: #080a0f;
+    --panel: #0f131c;
+    --card: #121824;
+    --ink: #e8edf8;
+    --muted: #8b9ab8;
+    --accent: #f0b429;
+    --accent-2: #5eead4;
+    --accent-3: #7aa8ff;
+    --danger: #f87171;
+    --ok: #4ade80;
+    --stroke: #1c2436;
+    --glow: 0 0 40px rgba(240, 180, 41, 0.18);
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, Roboto, Arial, sans-serif;
+    background:
+      radial-gradient(900px 500px at 15% -5%, #1a1520 0%, transparent 55%),
+      radial-gradient(700px 400px at 95% 10%, #0d1a28 0%, transparent 50%),
+      var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+  }
+  header {
+    position: sticky; top: 0; z-index: 100;
+    padding: 18px 20px 12px;
+    backdrop-filter: blur(10px);
+    background: linear-gradient(180deg, rgba(8,10,15,.95), rgba(8,10,15,.7) 70%, transparent);
+    border-bottom: 1px solid var(--stroke);
+  }
+  .title { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  h1 { margin: 0; font-size: 17px; font-weight: 650; letter-spacing: .2px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 11px; border-radius: 999px; font-size: 11px;
+    background: #151d2b; border: 1px solid #273248; color: var(--accent);
+  }
+  .pill.open { color: var(--accent-3); border-color: #2a3d5c; }
+  .pill.closed { color: var(--ok); border-color: #1f4a35; }
+  .pill.neg { color: var(--danger); border-color: #4a2020; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 16px 20px 48px; }
+  .grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 16px; }
+  @media (max-width: 960px) { .grid { grid-template-columns: 1fr; } }
+  .card {
+    background: linear-gradient(165deg, var(--card), #0b0f18);
+    border: 1px solid var(--stroke);
+    border-radius: 14px;
+    padding: 16px 18px;
+  }
+  h2 { margin: 0 0 10px; font-size: 16px; }
+  h3 { margin: 12px 0 8px; font-size: 13px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .6px; }
+  p { color: #c5d0ea; margin: 8px 0; }
+  .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; }
+  .status-bar {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px;
+    font-size: 11px;
+  }
+  .tag {
+    padding: 4px 9px; border-radius: 6px;
+    background: #0d121c; border: 1px solid var(--stroke); color: #b8c8e8;
+  }
+  .tag.ok { border-color: #1e4d38; color: #86efac; }
+  .tag.open { border-color: #2a4060; color: #93c5fd; }
+  .tag.neg { border-color: #5c2020; color: #fca5a5; }
+  .tag.live { border-color: #3d3520; color: var(--accent); }
+  .viz-wrap {
+    position: relative; border-radius: 12px; overflow: hidden;
+    border: 1px solid var(--stroke); background: #060810;
+    min-height: 340px;
+  }
+  #viz { width: 100%; height: 340px; display: block; }
+  .viz-legend {
+    position: absolute; bottom: 10px; left: 10px; right: 10px;
+    display: flex; flex-wrap: wrap; gap: 8px; font-size: 11px;
+  }
+  .legend-item { display: flex; align-items: center; gap: 5px; color: var(--muted); }
+  .swatch { width: 10px; height: 10px; border-radius: 2px; }
+  .controls { display: grid; gap: 12px; margin-top: 12px; }
+  label { font-size: 12px; color: var(--muted); display: block; margin-bottom: 4px; }
+  input[type=range] { width: 100%; accent-color: var(--accent); }
+  .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    cursor: pointer; padding: 9px 12px; border-radius: 10px;
+    border: 1px solid var(--stroke); background: #111827; color: #e5edff;
+    font-size: 12px; transition: box-shadow .2s, border-color .2s;
+  }
+  .btn:hover { box-shadow: var(--glow); border-color: #3a3020; }
+  .btn.primary { background: linear-gradient(180deg, #2a2010, #1a1408); color: #fde68a; border-color: #4a3818; }
+  .btn.ghost { background: transparent; }
+  .kpi-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .kpi { padding: 12px; border-radius: 10px; background: #0b1018; border: 1px solid var(--stroke); }
+  .kpi .label { font-size: 11px; color: var(--muted); }
+  .kpi .val { font-size: 20px; font-weight: 700; margin-top: 2px; }
+  .kpi .val.pass { color: var(--ok); }
+  .kpi .val.open { color: var(--accent-3); }
+  .layers {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 10px;
+  }
+  .layer {
+    padding: 12px; border-radius: 10px; border: 1px dashed var(--stroke);
+    background: #0a0e16;
+  }
+  .layer.seen { border-color: #2a4060; }
+  .layer.unseen { border-color: #4a3818; }
+  .layer h4 { margin: 0 0 6px; font-size: 13px; }
+  .layer.seen h4 { color: var(--accent-3); }
+  .layer.unseen h4 { color: var(--accent); }
+  .layer ul { margin: 0; padding-left: 18px; font-size: 12px; color: #b8c4dc; }
+  details {
+    border: 1px solid var(--stroke); border-radius: 12px;
+    padding: 10px 12px; background: #0b1018; margin: 10px 0;
+  }
+  details > summary { cursor: pointer; font-weight: 600; font-size: 13px; list-style: none; }
+  details > summary::-webkit-details-marker { display: none; }
+  blockquote {
+    margin: 8px 0; padding: 10px 12px; border-left: 3px solid var(--accent);
+    background: #0d1218; color: #e8f0ff; font-size: 13px; border-radius: 0 8px 8px 0;
+  }
+  .probe-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .probe-table th, .probe-table td {
+    text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--stroke);
+  }
+  .probe-table th { color: var(--muted); font-weight: 600; }
+  .q-block { margin: 10px 0; padding: 10px 12px; border-radius: 10px; background: #0a0f18; border: 1px solid var(--stroke); }
+  .q-block .q-id { font-size: 11px; color: var(--accent); font-weight: 700; }
+  .q-block .verdict { font-size: 14px; font-weight: 700; margin: 4px 0; }
+  .q-block .verdict.pass { color: var(--ok); }
+  .q-block .verdict.safe { color: var(--ok); }
+  .q-block .verdict.partial { color: var(--accent); }
+  .firewall { display: grid; gap: 6px; }
+  .firewall .rule {
+    font-size: 12px; padding: 8px 10px; border-radius: 8px;
+    background: #0d1018; border: 1px solid #2a1820; color: #f0c4c4;
+    font-family: ui-monospace, monospace;
+  }
+  .ledger-final {
+    padding: 14px; border-radius: 10px; background: #080c14;
+    border: 1px solid var(--stroke); font-family: ui-monospace, monospace;
+    font-size: 12px; line-height: 1.7; color: #b8d0f0; white-space: pre-wrap;
+  }
+  .mode-toggle { display: flex; gap: 6px; }
+  .mode-toggle .btn.active { border-color: var(--accent); color: var(--accent); box-shadow: var(--glow); }
+  footer { max-width: 1180px; margin: 24px auto; padding: 0 20px; color: var(--muted); font-size: 11px; }
+  .analogy-tag {
+    display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 4px;
+    background: #1a1520; border: 1px solid #3a3020; color: var(--accent); margin-left: 6px;
+  }
+  .nav-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 12px 20px 0; max-width: 1180px; margin-left: auto; margin-right: auto; }
+  .nav-tabs .btn { font-size: 11px; padding: 7px 11px; }
+  .nav-tabs .btn.active { border-color: var(--accent-2); color: var(--accent-2); }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .graph-wrap { overflow: auto; padding: 8px 0; }
+  .graph-svg { min-width: 520px; height: 280px; }
+  .catalog { max-height: 360px; overflow: auto; }
+  .catalog-item {
+    padding: 10px 12px; border-bottom: 1px solid var(--stroke); font-size: 12px;
+    cursor: pointer; transition: background .15s;
+  }
+  .catalog-item:hover { background: #141c2a; }
+  .catalog-item .meta { color: var(--muted); font-size: 10px; margin-top: 3px; }
+  .search { width: 100%; padding: 9px 11px; border-radius: 8px; border: 1px solid var(--stroke); background: #0a0f18; color: var(--ink); margin-bottom: 10px; font-size: 12px; }
+  .build-meta { font-size: 11px; color: var(--muted); margin-bottom: 10px; }
+  .cp-row { font-size: 11px; padding: 8px 0; border-bottom: 1px solid var(--stroke); }
+  .cp-row code { color: var(--accent-2); font-size: 10px; }
+  .energy-row-kns { background: rgba(240,180,41,.06); }
+  .link-path { color: var(--accent-3); word-break: break-all; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="title">
+    <svg width="26" height="26" viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="12" cy="12" r="3" fill="#f0b429"/>
+      <g stroke="#f0b429" stroke-width="1.2" opacity=".85">
+        <line x1="12" y1="12" x2="12" y2="2"/><line x1="12" y1="12" x2="20" y2="6"/>
+        <line x1="12" y1="12" x2="22" y2="12"/><line x1="12" y1="12" x2="20" y2="18"/>
+        <line x1="12" y1="12" x2="12" y2="22"/><line x1="12" y1="12" x2="4" y2="18"/>
+        <line x1="12" y1="12" x2="2" y2="12"/><line x1="12" y1="12" x2="4" y2="6"/>
+      </g>
+      <circle cx="12" cy="12" r="9" fill="none" stroke="#5eead4" stroke-width=".8" stroke-dasharray="3 4" opacity=".6"/>
+    </svg>
+    <h1>PeAIce Index · KNS(LB)</h1>
+    <span class="pill">PEAICE-INDEX-HOST-001</span>
+    <span class="pill">Grok terminal</span>
+    <span class="pill closed">Gate PASS</span>
+    <span class="pill open">RH OPEN</span>
+  </div>
+  <div class="status-bar" id="statusBar"></div>
+</header>
+
+<nav class="nav-tabs" id="navTabs">
+  <button class="btn active" data-panel="probe">Probe · Viz</button>
+  <button class="btn" data-panel="compute">Compute Graph · CP</button>
+  <button class="btn" data-panel="papers">Papers</button>
+  <button class="btn" data-panel="math">Math References</button>
+</nav>
+
+<main class="wrap">
+  <div id="panel-probe" class="panel active">
+  <div class="grid">
+
+    <section>
+      <div class="card">
+        <h2>Light as Thought-Probe <span class="analogy-tag">STRUCTURAL ANALOGY</span></h2>
+        <blockquote id="epigraph">
+          needles = seen · Action(C) = unseen in overlap · Re(s)=½ = placement register ·
+          ζ(0)=−½ = anchor · E = L² = minimal credits for maximal typed coherence
+        </blockquote>
+
+        <div class="viz-wrap">
+          <svg id="viz" viewBox="0 0 520 340" aria-label="KNS fan geometry visualization"></svg>
+          <div class="viz-legend">
+            <span class="legend-item"><span class="swatch" style="background:#7aa8ff"></span> needles σ_ω (seen)</span>
+            <span class="legend-item"><span class="swatch" style="background:#f0b429;opacity:.7"></span> μ glare / overlap</span>
+            <span class="legend-item"><span class="swatch" style="background:#5eead4"></span> π_A placement register</span>
+            <span class="legend-item"><span class="swatch" style="background:#4ade80"></span> center C</span>
+          </div>
+        </div>
+
+        <div class="controls">
+          <div class="row mode-toggle">
+            <button class="btn active" data-mode="fan" id="btnFan">Fan (through C)</button>
+            <button class="btn" data-mode="perron" id="btnPerron">Perron (no center)</button>
+          </div>
+          <div>
+            <label>δ discretization · glare scale <span class="mono" id="deltaVal">0.15</span></label>
+            <input type="range" id="delta" min="0.05" max="0.45" step="0.01" value="0.15">
+          </div>
+          <div>
+            <label>Placement register π_A alignment <span class="mono" id="alignVal">0.05</span> (ℓ_off)</label>
+            <input type="range" id="align" min="0" max="1" step="0.01" value="0.05">
+          </div>
+        </div>
+
+        <div class="layers">
+          <div class="layer seen">
+            <h4>Seen — overlap layer</h4>
+            <ul>
+              <li>Needles σ_ω, bloom / deltoid shadow</li>
+              <li>μ(x), clustering Δ_max</li>
+              <li>Union footprint U(T,Y)</li>
+            </ul>
+          </div>
+          <div class="layer unseen">
+            <h4>Unseen — placement layer</h4>
+            <ul>
+              <li>Action(C) throughput ingress</li>
+              <li>π_A @ Π_½ = {Re s = ½}</li>
+              <li>ℓ_off = ‖(I−π_A)ψ‖²</li>
+            </ul>
+          </div>
+        </div>
+        <p class="mono" style="margin-top:12px;color:var(--muted)" id="inversionNote">
+          Fan: sup μ ≍ δ^{−(d−1)} while μ̄ ≍ 1 — high glare does not determine placement.
+        </p>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h2>Probe Receipt</h2>
+        <p class="small" style="font-size:12px;color:var(--muted)">Deterministic · stdlib · sha pinned · re-run locally with <span class="mono">kns_lb_probe.py</span></p>
+        <div class="kpi-grid" id="kpiGrid"></div>
+        <table class="probe-table" style="margin-top:12px">
+          <thead><tr><th>Field</th><th>Value</th><th>Tag</th></tr></thead>
+          <tbody id="probeTable"></tbody>
+        </table>
+        <div class="row" style="margin-top:12px">
+          <button class="btn primary" id="runProbe">Simulate probe receipt</button>
+          <button class="btn" id="exportJson">Export full bundle JSON</button>
+          <button class="btn ghost" id="copyEpigraph">Copy epigraph</button>
+        </div>
+        <p class="build-meta" id="buildMeta"></p>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h2>KNS(LB) Diagrams</h2>
+        <div class="row" style="gap:10px">
+          <img src="assets/kns-lb/01-two-layer.png" alt="Seen vs unseen layers" style="max-width:48%;border-radius:8px;border:1px solid var(--stroke)">
+          <img src="assets/kns-lb/02-fan-perron.png" alt="Fan vs Perron inversion" style="max-width:48%;border-radius:8px;border:1px solid var(--stroke)">
+        </div>
+        <div class="row" style="gap:10px;margin-top:8px">
+          <img src="assets/kns-lb/03-gate-kns-obs1.png" alt="KNS-OBS-1 gate" style="max-width:48%;border-radius:8px;border:1px solid var(--stroke)">
+          <img src="assets/kns-lb/04-closure-ladder.png" alt="Closure ladder" style="max-width:48%;border-radius:8px;border:1px solid var(--stroke)">
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h2>CP-003 × KNS Energy Table <span class="analogy-tag">LIVE FROM BUILD</span></h2>
+        <p style="font-size:12px;color:var(--muted)">Rows from <span class="mono">build_kns_lb_app_data.py</span> — KNS probe + CP-003 lanes</p>
+        <table class="probe-table" id="energyTable">
+          <thead><tr><th>Lane</th><th>Steps</th><th>E_used</th><th>ρ_Y</th><th>dense</th><th>Source</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <aside>
+      <div class="card">
+        <h2>β-Protocol Register</h2>
+        <div id="registerBoard"></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h2>Symbol Firewall</h2>
+        <div class="firewall" id="firewall"></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h2>Q-GROK-KNS Probe</h2>
+        <div id="qBlocks"></div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <h2>Final Ledger</h2>
+        <div class="ledger-final" id="finalLedger"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h2>CP-004 Independent Y · Command Plan</h2>
+    <details open>
+      <summary>Re-run spec (no CP-003 seed-7 back-solve)</summary>
+      <pre class="mono" style="overflow:auto;padding:12px;background:#080c14;border-radius:10px;border:1px solid var(--stroke);font-size:11px;color:#b8d4f0" id="cp004Block"></pre>
+    </details>
+    <details>
+      <summary>Public copy guard (light metaphor)</summary>
+      <pre class="mono" style="padding:12px;background:#080c14;border-radius:10px;border:1px solid var(--stroke);font-size:11px;color:#fde68a" id="publicGuard"></pre>
+    </details>
+    <details>
+      <summary>Program chain · centerline</summary>
+      <pre class="mono" style="padding:12px;background:#080c14;border-radius:10px;border:1px solid var(--stroke);font-size:11px;color:#b8d4f0" id="chainBlock"></pre>
+    </details>
+  </div>
+  </div><!-- /panel-probe -->
+
+  <div id="panel-compute" class="panel">
+    <div class="card">
+      <h2>Compute Graph — KNS ↔ CP wiring</h2>
+      <p style="font-size:12px;color:var(--muted)">Nodes = Python scripts & papers · edges = data/receipt dependencies</p>
+      <div class="graph-wrap"><svg class="graph-svg" id="computeGraph" viewBox="0 0 720 280"></svg></div>
+    </div>
+    <div class="grid" style="margin-top:16px">
+      <div class="card">
+        <h2>CP Scripts · sha pinned</h2>
+        <div id="cpScripts"></div>
+        <details style="margin-top:10px">
+          <summary>Rebuild commands</summary>
+          <pre class="mono" id="rebuildCmds" style="font-size:11px;padding:10px;background:#080c14;border-radius:8px;overflow:auto"></pre>
+        </details>
+      </div>
+      <div class="card">
+        <h2>CP-004 WP5b live diagnostic</h2>
+        <pre class="mono" id="cp004Live" style="font-size:11px;padding:12px;background:#080c14;border-radius:10px;overflow:auto;color:#b8d4f0"></pre>
+        <h3 style="margin-top:14px">cp_verify stamp (KNS)</h3>
+        <pre class="mono" id="verifyStamp" style="font-size:10px;padding:10px;background:#080c14;border-radius:8px;overflow:auto;color:#9ab0d0;max-height:180px"></pre>
+      </div>
+    </div>
+  </div>
+
+  <div id="panel-papers" class="panel">
+    <div class="card">
+      <h2>Papers & Program Artifacts</h2>
+      <input class="search" id="paperSearch" placeholder="Filter papers — KNS, WP5b, CC, DDATL…">
+      <div class="catalog" id="paperCatalog"></div>
+      <p style="font-size:11px;color:var(--muted);margin-top:8px">Click row to copy relative path · open from Research root</p>
+    </div>
+  </div>
+
+  <div id="panel-math" class="panel">
+    <div class="card">
+      <h2>Math References (PDF)</h2>
+      <input class="search" id="mathSearch" placeholder="Filter — Kakeya, Krein, HS, iPiano…">
+      <div class="catalog" id="mathCatalog"></div>
+      <p style="font-size:11px;color:var(--muted);margin-top:8px">Local PDFs under <span class="mono">Math-References/</span></p>
+    </div>
+  </div>
+</main>
+
+<footer>
+  PeAIce · Love Labs LCA · KakeyaLogic · L²_C · Claude V6.5 · Grok terminal probe July 3, 2026.
+  RH OPEN · Coleman OPEN · h &lt; 1 · no proof claimed · PeAIce files ≠ automatic canon.
+  <a href="https://github.com/Manny536/peaice-index" style="color:var(--accent-3)">github.com/Manny536/peaice-index</a> ·
+  <a href="https://github.com/Manny536/kakeyalogic" style="color:var(--accent-3)">kakeyalogic</a> ·
+  <a href="https://github.com/Manny536/claude-v6" style="color:var(--accent-3)">claude-v6</a> ·
+  <a href="https://lovelabslca.com" style="color:var(--accent-3)">lovelabslca.com</a>
+</footer>
+
+<script src="kns_lb_app_data.js"></script>
+<script>
+const BUNDLE = window.KNS_APP_DATA || {};
+const STATE = {
+  designation: "PEAICE-GROK-KNS-LB-PROBE-2026-07-03",
+  date: "2026-07-03",
+  repos: { kakeyalogic: "aad63c6", claude_v6: "0a1a6ed" },
+  probe: {
+    script_sha256: "09ef26d3a2eb51927d3adecb74d3ef3edd62660dd11438576be4c2da8211b011",
+    delta_align: 0.05,
+    steps: 2,
+    ell_off_T: 0.010152,
+    E_used: 3.0406,
+    rho_Y: 0.4812,
+    dense_pass: true,
+    D5_unimodal_monotone: true,
+    D5_twomode_monotone: false,
+    twomode_peak_ell: 0.9662,
+    twomode_peak_at: 1.0,
+    D5_expectation_met: true,
+    H1: "l_off placement-only in rank-one model",
+    H2: "E_used ledger-determined (CP-003 arithmetic)",
+    H3: "YC=1.463 calibration import — CP-004 owed"
+  },
+  registers: [
+    { name: "RH", status: "OPEN", cls: "open" },
+    { name: "Coleman", status: "OPEN", cls: "open" },
+    { name: "K_σ det lane", status: "CLOSED-NEG", cls: "neg" },
+    { name: "WP5b bounded", status: "CLOSED-NEG", cls: "neg" },
+    { name: "KNS typed", status: "CLOSED-POS", cls: "ok" },
+    { name: "KNS lift", status: "OPEN", cls: "open" },
+    { name: "Prime-carrying L3", status: "LIVE·FORCED", cls: "live" },
+    { name: "CP-004", status: "SPEC·OWED", cls: "open" },
+    { name: "KREIN-RANK1", status: "PROPOSED", cls: "live" }
+  ],
+  firewall: [
+    "μ ≠ π_A",
+    "σ(K_σ) ≠ Re(s)=½",
+    "ρ_Y ≠ spectral radius",
+    "E_used ≠ token count",
+    "deltoid ≠ ζ(s)",
+    "bloom/glare/light ≠ zero-location theorem",
+    "KNS(LB) ≠ RH proof"
+  ],
+  questions: [
+    { id: "Q-GROK-KNS-1", title: "Typed-object closure", verdict: "PASS", cls: "pass",
+      note: "CLOSED-POSITIVE as typed object only. Lift required at zeros · RH · det_ζ · H_PC." },
+    { id: "Q-GROK-KNS-2", title: "μ ↛ π_A separation", verdict: "PASS", cls: "pass",
+      note: "Fan + Perron inversion preserve separation. Low collapse risk with firewall." },
+    { id: "Q-GROK-KNS-3", title: "CC-BL-001a split", verdict: "FORMAL + NUMERICS", cls: "pass",
+      note: "RC-1 Prékopa monotone proved; unscoped refuted by two-mode peak 0.9662." },
+    { id: "Q-GROK-KNS-4", title: "CP-004 spec", verdict: "DEFINED", cls: "partial",
+      note: "Independent Y required; no seed-7 back-solve. Execution still owed." },
+    { id: "Q-GROK-KNS-5", title: "Prime-carrying seam", verdict: "PASS", cls: "pass",
+      note: "KREIN-RANK1 is wall face, not solved route. AMEND: unbounded L1 separately catalogued." },
+    { id: "Q-GROK-KNS-6", title: "Light metaphor", verdict: "SAFE", cls: "safe",
+      note: "STRUCTURAL ANALOGY with tag. Not RH · not zero-location · not det identity." },
+    { id: "Q-GROK-KNS-7", title: "Promotion", verdict: "PARTIAL", cls: "partial",
+      note: "KNS-OBS-1 → REGISTERED-READY on principal sign-off. Theorem lift blocked." }
+  ],
+  ledger: `KNS(LB) typed object:     CLOSED-POSITIVE · REGISTERED-READY
+theorem lift:             OPEN
+CP-004:                   SPEC DEFINED · EXECUTION OWED
+KREIN-RANK1:              PROPOSED-FOR-CANON · wall face
+prime-carrying L3:        LIVE · FORCED
+RH:                       OPEN
+Coleman:                  OPEN
+h:                        < 1`
+};
+
+const W = 0.35;
+function g(d) { return Math.exp(-(d*d)/(4*W*W)); }
+function ellUnimodal(d) { return 1 - g(d)**2; }
+function ellTwomode(d, L=2) {
+  const a=g(d), b=g(L-d), s=g(L);
+  const proj=(a*a - 2*a*b*s + b*b)/(1-s*s);
+  return 1-proj;
+}
+function monotoneStrict(vals) {
+  for (let i=1;i<vals.length;i++) if (!(vals[i]>vals[i-1])) return false;
+  return true;
+}
+function computeProbe(deltaAlign=0.05) {
+  const grid = Array.from({length:41},(_,i)=>i*0.05);
+  const uni = grid.map(ellUnimodal);
+  const two = grid.map(d=>ellTwomode(d));
+  const ellT = ellUnimodal(deltaAlign);
+  const E = 2*(1+2*ellT+0.5);
+  const YC = 1.463;
+  return {
+    ...STATE.probe,
+    delta_align: deltaAlign,
+    ell_off_T: +ellT.toFixed(6),
+    E_used: +E.toFixed(4),
+    rho_Y: +(YC/E).toFixed(4),
+    dense_pass: E<=10 && ellT<0.2 && YC/E>=0.4,
+    D5_unimodal_monotone: monotoneStrict(uni),
+    D5_twomode_monotone: monotoneStrict(two),
+    twomode_peak_ell: +Math.max(...two).toFixed(4),
+    twomode_peak_at: grid[two.indexOf(Math.max(...two))],
+    D5_expectation_met: monotoneStrict(uni) && !monotoneStrict(two) && E<=10 && ellT<0.2 && YC/E>=0.4
+  };
+}
+
+let mode = "fan";
+let delta = 0.15;
+let align = 0.05;
+
+function drawViz() {
+  const svg = document.getElementById("viz");
+  const cx=260, cy=170;
+  const n = mode==="fan" ? 16 : 12;
+  const glare = mode==="fan" ? Math.min(1, 0.25 + (0.45-delta)*0.5 + delta*2) : Math.min(1, 0.4 + delta*1.8);
+  const muBar = mode==="fan" ? "~1" : `~log(1/δ)`;
+  const supMu = mode==="fan" ? `δ^{-(d-1)}` : "no center";
+  let html = "";
+
+  // glare field
+  const gr = 40 + glare*90;
+  html += `<defs>
+    <radialGradient id="glare" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f0b429" stop-opacity="${0.15+glare*0.35}"/>
+      <stop offset="70%" stop-color="#f0b429" stop-opacity="${0.05+glare*0.1}"/>
+      <stop offset="100%" stop-color="#f0b429" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="pcenter" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#5eead4" stop-opacity=".9"/>
+      <stop offset="100%" stop-color="#5eead4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>`;
+
+  if (mode==="fan") {
+    html += `<circle cx="${cx}" cy="${cy}" r="${gr}" fill="url(#glare)"/>`;
+  } else {
+    for (let i=0;i<5;i++) {
+      const ox = 80 + i*90 + Math.sin(i)*20;
+      const oy = 80 + (i%3)*70;
+      html += `<circle cx="${ox}" cy="${oy}" r="28" fill="url(#glare)" opacity=".55"/>`;
+    }
+  }
+
+  // needles
+  for (let i=0;i<n;i++) {
+    const ang = (i/n)*Math.PI*2 - Math.PI/2;
+    const len = mode==="fan" ? 130 : 90 + (i%3)*15;
+    const ox = mode==="fan" ? cx : cx + Math.cos(ang)*55;
+    const oy = mode==="fan" ? cy : cy + Math.sin(ang)*40;
+    const x2 = ox + Math.cos(ang)*len;
+    const y2 = oy + Math.sin(ang)*len;
+    html += `<line x1="${ox}" y1="${oy}" x2="${x2}" y2="${y2}" stroke="#7aa8ff" stroke-width="1.4" opacity=".75"/>`;
+  }
+
+  // center C (fan only)
+  if (mode==="fan") {
+    html += `<circle cx="${cx}" cy="${cy}" r="7" fill="#4ade80"/>`;
+    html += `<text x="${cx+12}" y="${cy+4}" fill="#4ade80" font-size="11" font-family="monospace">C</text>`;
+  }
+
+  // placement register π_A — decoupled from glare peak
+  const px = cx + 95;
+  const py = cy - 75;
+  const leak = align;
+  html += `<rect x="${px-4}" y="${py-4}" width="108" height="52" rx="8" fill="#0a1018" stroke="#5eead4" stroke-width="1" opacity=".9"/>`;
+  html += `<text x="${px}" y="${py+12}" fill="#5eead4" font-size="10" font-family="monospace">π_A register</text>`;
+  html += `<text x="${px}" y="${py+28}" fill="#8b9ab8" font-size="9" font-family="monospace">Re(s)=½ · Π_½</text>`;
+  html += `<text x="${px}" y="${py+42}" fill="#f0b429" font-size="9" font-family="monospace">ℓ_off=${leak.toFixed(2)}</text>`;
+
+  // HUD
+  html += `<text x="14" y="24" fill="#8b9ab8" font-size="11" font-family="monospace">mode: ${mode.toUpperCase()}</text>`;
+  html += `<text x="14" y="42" fill="#8b9ab8" font-size="11" font-family="monospace">μ̄ ${muBar} · sup μ ${supMu}</text>`;
+  html += `<text x="14" y="60" fill="#8b9ab8" font-size="11" font-family="monospace">overlap ↛ placement</text>`;
+
+  svg.innerHTML = html;
+  document.getElementById("inversionNote").textContent = mode==="fan"
+    ? "Fan: sup μ ≍ δ^{−(d−1)} while μ̄ ≍ 1 — high glare, ℓ_off can = 1. Placement not determined by overlap."
+    : "Perron: μ̄ ≍ log(1/δ) with no center — divergent average overlap, ℓ_off = 0 possible. Sharp inversion.";
+}
+
+function renderStatusBar() {
+  document.getElementById("statusBar").innerHTML = STATE.registers.map(r =>
+    `<span class="tag ${r.cls}">${r.name}: ${r.status}</span>`).join("");
+}
+
+function renderRegister() {
+  document.getElementById("registerBoard").innerHTML = STATE.registers.map(r =>
+    `<div class="row" style="justify-content:space-between;margin:6px 0;font-size:12px">
+      <span>${r.name}</span><span class="tag ${r.cls}" style="font-size:10px">${r.status}</span></div>`).join("");
+}
+
+function renderFirewall() {
+  document.getElementById("firewall").innerHTML = STATE.firewall.map(r =>
+    `<div class="rule">${r}</div>`).join("");
+}
+
+function renderQuestions() {
+  document.getElementById("qBlocks").innerHTML = STATE.questions.map(q =>
+    `<div class="q-block">
+      <div class="q-id">${q.id}</div>
+      <div style="font-size:12px;color:var(--muted)">${q.title}</div>
+      <div class="verdict ${q.cls}">${q.verdict}</div>
+      <div style="font-size:11px;color:#9aa8c4">${q.note}</div>
+    </div>`).join("");
+}
+
+function renderProbe(data) {
+  const kpis = [
+    { label: "Gate", val: data.D5_expectation_met ? "PASS" : "FAIL", cls: data.D5_expectation_met ? "pass" : "" },
+    { label: "E_used", val: data.E_used, cls: "" },
+    { label: "ρ_Y", val: data.rho_Y, cls: "" },
+    { label: "dense_pass", val: data.dense_pass ? "True" : "False", cls: data.dense_pass ? "pass" : "" }
+  ];
+  document.getElementById("kpiGrid").innerHTML = kpis.map(k =>
+    `<div class="kpi"><div class="label">${k.label}</div><div class="val ${k.cls}">${k.val}</div></div>`).join("");
+
+  const rows = [
+    ["script_sha256", data.script_sha256.slice(0,16)+"…", "pinned"],
+    ["ell_off^T", data.ell_off_T, "H1"],
+    ["D5 unimodal", data.D5_unimodal_monotone, "FORMAL"],
+    ["D5 twomode", data.D5_twomode_monotone, "countermodel"],
+    ["twomode peak", `${data.twomode_peak_ell} @ δ=${data.twomode_peak_at}`, "NUMERICS"],
+    ["H3", data.H3, "CP-004 owed"]
+  ];
+  document.getElementById("probeTable").innerHTML = rows.map(([f,v,t]) =>
+    `<tr><td>${f}</td><td class="mono">${v}</td><td>${t}</td></tr>`).join("");
+}
+
+function initStaticBlocks() {
+  document.getElementById("finalLedger").textContent = STATE.ledger;
+  document.getElementById("cp004Block").textContent = `# CP-004 independent Y re-run
+cd kakeyalogic
+python3 probes/kns_lb_probe.py
+python3 cp_verify.py probes/kns_lb_probe.py --runner "CP-004-KNS-LB-001"
+
+# Independent Y — NOT YC=1.463 (CP-003 seed-7)
+YC_INDEP=<independent> python3 -c "…"  # H3_lane=CP-004-independent
+
+FAIL if: YC still 1.463 · D5_unimodal=False · non-deterministic stamp`;
+  document.getElementById("publicGuard").textContent = `[KNS(LB) · STRUCTURAL ANALOGY · not RH proof]
+Needles visible; center action unseen in overlap;
+Re(s)=½ = declared placement register, not bloom statistic.`;
+  document.getElementById("chainBlock").textContent = `Kakeya geometry → Coleman antecedent (N)
+  → KNS(LB) typed (μ ↛ π_A)
+  → DDATL + ℓ_off + π_A
+  → MPR / prime-carrying trace (KREIN-RANK1 face)
+  → det_ζ [OPEN] → RH [OPEN]`;
+}
+
+document.getElementById("delta").addEventListener("input", e => {
+  delta = +e.target.value;
+  document.getElementById("deltaVal").textContent = delta.toFixed(2);
+  drawViz();
+});
+document.getElementById("align").addEventListener("input", e => {
+  align = +e.target.value;
+  document.getElementById("alignVal").textContent = align.toFixed(2);
+  drawViz();
+});
+document.getElementById("btnFan").addEventListener("click", () => {
+  mode="fan"; document.getElementById("btnFan").classList.add("active");
+  document.getElementById("btnPerron").classList.remove("active"); drawViz();
+});
+document.getElementById("btnPerron").addEventListener("click", () => {
+  mode="perron"; document.getElementById("btnPerron").classList.add("active");
+  document.getElementById("btnFan").classList.remove("active"); drawViz();
+});
+document.getElementById("runProbe").addEventListener("click", () => {
+  const data = computeProbe(align*0.5+0.02);
+  STATE.probe = data;
+  renderProbe(data);
+});
+document.getElementById("exportJson").addEventListener("click", () => {
+  const blob = new Blob([JSON.stringify({...STATE, bundle: BUNDLE, probe: computeProbe()}, null, 2)], {type:"application/json"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "PEAICE-KNS-LB-probe-export.json";
+  a.click();
+});
+document.getElementById("copyEpigraph").addEventListener("click", () => {
+  navigator.clipboard.writeText(document.getElementById("epigraph").textContent.trim());
+});
+
+function mergeBundle() {
+  if (!BUNDLE.kns_probe) return;
+  STATE.probe = { ...STATE.probe, ...BUNDLE.kns_probe,
+    H1: STATE.probe.H1, H2: STATE.probe.H2, H3: STATE.probe.H3 };
+  if (BUNDLE.repos) STATE.repos = BUNDLE.repos;
+}
+
+function renderEnergyTable() {
+  const rows = BUNDLE.cp003_energy_table || [];
+  const tbody = document.querySelector("#energyTable tbody");
+  if (!tbody) return;
+  tbody.innerHTML = rows.map(r => {
+    const cls = r.lane.includes("KNS") ? "energy-row-kns" : "";
+    return `<tr class="${cls}">
+      <td>${r.lane}</td><td>${r.steps}</td><td>${r.E_used}</td>
+      <td>${r.rho_Y}</td><td>${r.dense_pass}</td>
+      <td class="mono" style="font-size:10px">${r.source}</td></tr>`;
+  }).join("");
+}
+
+function renderBuildMeta() {
+  const el = document.getElementById("buildMeta");
+  if (!el || !BUNDLE.built_at) return;
+  el.textContent = `Data built ${BUNDLE.built_at} · root ${BUNDLE.research_root || "—"} · re-run build_kns_lb_app_data.py for higher accuracy`;
+}
+
+function renderCpScripts() {
+  const el = document.getElementById("cpScripts");
+  if (!el) return;
+  el.innerHTML = (BUNDLE.cp_scripts || []).map(s =>
+    `<div class="cp-row"><strong>${s.package}</strong> · ${s.name}<br>
+     <span style="color:var(--muted)">${s.description}</span><br>
+     <code>${s.sha256 ? s.sha256.slice(0,20)+"…" : "—"}</code>
+     <div class="link-path">${s.path}</div></div>`).join("");
+  const rc = document.getElementById("rebuildCmds");
+  if (rc && BUNDLE.commands) rc.textContent = Object.entries(BUNDLE.commands).map(([k,v])=>`# ${k}\n${v}`).join("\n\n");
+  const c4 = document.getElementById("cp004Live");
+  if (c4 && BUNDLE.cp004_wp5b) c4.textContent = JSON.stringify(BUNDLE.cp004_wp5b, null, 2);
+  const vs = document.getElementById("verifyStamp");
+  if (vs && BUNDLE.kns_verify_stamp) vs.textContent = JSON.stringify(BUNDLE.kns_verify_stamp, null, 2);
+}
+
+function renderComputeGraph() {
+  const g = BUNDLE.compute_graph;
+  const svg = document.getElementById("computeGraph");
+  if (!g || !svg) return;
+  const pos = {
+    kns_lb_probe: [360, 140], cp_verify: [520, 80], cp003_energy: [200, 140],
+    cp004_wp5b: [200, 240], cp004_kns_y: [360, 40], prime_l3: [520, 200],
+    kakeyalogic: [80, 140], claude_v6: [80, 240]
+  };
+  const colors = { KNS:"#f0b429", stamp:"#5eead4", "V6.4.3":"#f87171", CP:"#7aa8ff", verify:"#fde68a", proof:"#c4b5fd", live:"#4ade80" };
+  let html = "";
+  g.edges.forEach(e => {
+    const a = pos[e.from], b = pos[e.to];
+    if (!a || !b) return;
+    html += `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" stroke="#2a3548" stroke-width="1.2"/>`;
+    const mx=(a[0]+b[0])/2, my=(a[1]+b[1])/2;
+    html += `<text x="${mx}" y="${my-4}" fill="#6b7a94" font-size="8" text-anchor="middle">${e.label}</text>`;
+  });
+  g.nodes.forEach(n => {
+    const p = pos[n.id] || [0,0];
+    const c = colors[n.lane] || "#8b9ab8";
+    html += `<circle cx="${p[0]}" cy="${p[1]}" r="22" fill="#0f1520" stroke="${c}" stroke-width="1.5"/>`;
+    html += `<text x="${p[0]}" y="${p[1]+4}" fill="${c}" font-size="8" text-anchor="middle" font-family="monospace">${n.id.replace(/_/g," ").slice(0,12)}</text>`;
+  });
+  svg.innerHTML = html;
+}
+
+function renderCatalog(id, items, searchId) {
+  const el = document.getElementById(id);
+  const search = document.getElementById(searchId);
+  if (!el) return;
+  function draw(q="") {
+    const qq = q.toLowerCase();
+    const filtered = (items||[]).filter(x =>
+      !qq || x.title.toLowerCase().includes(qq) || x.lane.toLowerCase().includes(qq) || (x.path||"").toLowerCase().includes(qq));
+    el.innerHTML = filtered.map(x =>
+      `<div class="catalog-item" data-path="${x.path}">
+        <strong>${x.title}</strong> <span class="tag" style="font-size:9px;padding:2px 6px">${x.lane}</span> <span class="tag open" style="font-size:9px;padding:2px 6px">${x.status||x.tag||""}</span>
+        <div class="meta link-path">${x.path}</div></div>`).join("");
+    el.querySelectorAll(".catalog-item").forEach(row => {
+      row.addEventListener("click", () => {
+        const p = row.dataset.path;
+        if (p.startsWith("http")) window.open(p, "_blank");
+        else navigator.clipboard.writeText(p);
+      });
+    });
+  }
+  draw();
+  if (search) search.addEventListener("input", e => draw(e.target.value));
+}
+
+document.querySelectorAll("#navTabs .btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("#navTabs .btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("panel-" + btn.dataset.panel).classList.add("active");
+  });
+});
+
+mergeBundle();
+renderStatusBar();
+renderRegister();
+renderFirewall();
+renderQuestions();
+initStaticBlocks();
+renderProbe(STATE.probe);
+renderEnergyTable();
+renderBuildMeta();
+renderCpScripts();
+renderComputeGraph();
+renderCatalog("paperCatalog", BUNDLE.papers, "paperSearch");
+renderCatalog("mathCatalog", BUNDLE.math_refs, "mathSearch");
+drawViz();
+</script>
+</body>
+</html>
