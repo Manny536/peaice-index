@@ -120,16 +120,24 @@ resize();
 addEventListener('resize', resize);
 
 function initAudio() {
-  if (gameState.audio.active) return;
+  if (gameState.audio.active) {
+    if (gameState.audio.ctx.state === 'suspended') gameState.audio.ctx.resume();
+    return;
+  }
   const actx = new (window.AudioContext||window.webkitAudioContext)();
-  const gain = actx.createGain();
-  gain.gain.value = 0;
-  gain.connect(actx.destination);
+  const master = actx.createGain();
+  master.gain.value = 0;
+  master.connect(actx.destination);
+
+  const mainGain = actx.createGain();
+  mainGain.gain.value = 0.12;
   const main = actx.createOscillator();
   main.type = 'sine';
   main.frequency.value = 528;
-  main.connect(gain);
+  main.connect(mainGain);
+  mainGain.connect(master);
   main.start();
+
   const harmonics = [639,741,852].map(freq => {
     const o = actx.createOscillator();
     o.type = 'sine';
@@ -137,33 +145,48 @@ function initAudio() {
     const g = actx.createGain();
     g.gain.value = 0;
     o.connect(g);
-    g.connect(gain);
+    g.connect(master);
     o.start();
     return {osc:o, gain:g};
   });
-  gameState.audio = {ctx:actx, main, harmonics, gain, active:true};
+
+  gameState.audio = {ctx:actx, main, mainGain, harmonics, gain:master, active:true, lastVibe:-1};
+  if (actx.state === 'suspended') actx.resume();
 }
 
 function updateAudioFromVibe() {
   if (!gameState.audio.active) return;
-  const {ctx, gain, harmonics} = gameState.audio;
-  const level = Math.min(1, gameState.vibeFrequency/100);
-  const base = 0.02 + level*0.15;
-  gain.gain.linearRampToValueAtTime(base, ctx.currentTime+0.1);
-  [0.3,0.6,0.85].forEach((step,i) => {
-    const target = level>step ? base*(0.3+i*0.15) : 0;
-    harmonics[i].gain.gain.linearRampToValueAtTime(target, ctx.currentTime+0.2);
+  const vibe = gameState.vibeFrequency;
+  if (vibe === gameState.audio.lastVibe) return;
+  gameState.audio.lastVibe = vibe;
+
+  const actx = gameState.audio.ctx;
+  const t = actx.currentTime;
+  const level = Math.min(1, vibe/100);
+  const base = 0.015 + level*0.12;
+  gameState.audio.gain.gain.cancelScheduledValues(t);
+  gameState.audio.gain.gain.setValueAtTime(gameState.audio.gain.gain.value, t);
+  gameState.audio.gain.gain.linearRampToValueAtTime(base, t+0.12);
+
+  const steps = [0.3, 0.6, 0.85];
+  gameState.audio.harmonics.forEach((h, i) => {
+    const target = level > steps[i] ? base*(0.25+i*0.12) : 0;
+    h.gain.gain.cancelScheduledValues(t);
+    h.gain.gain.setValueAtTime(h.gain.gain.value, t);
+    h.gain.gain.linearRampToValueAtTime(target, t+0.18);
   });
 }
 
 function bloomChord() {
   if (!gameState.audio.active) return;
-  const now = gameState.audio.ctx.currentTime;
+  const t = gameState.audio.ctx.currentTime;
   gameState.audio.harmonics.forEach(h => {
-    h.gain.gain.cancelScheduledValues(now);
-    h.gain.gain.setValueAtTime(h.gain.gain.value, now);
-    h.gain.gain.linearRampToValueAtTime(0.3, now+0.05);
-    h.gain.gain.exponentialRampToValueAtTime(0.001, now+1.2);
+    const g = h.gain.gain;
+    const cur = Math.max(0.0001, g.value);
+    g.cancelScheduledValues(t);
+    g.setValueAtTime(cur, t);
+    g.linearRampToValueAtTime(0.22, t+0.05);
+    g.linearRampToValueAtTime(0.0001, t+1.1);
   });
 }
 
@@ -337,9 +360,9 @@ class ConsciousnessNode {
   }
   connectNearby(lv){
     const r=lv.connectionRange,r2=r*r;
-    grid.query(this.x,this.y,r,other=>{
-      if(other===this||!other.isAwakened||this.connSet.has(other.id))return;
-      if(distSq(this.x,this.y,other.x,other.y)>r2)return;
+    for(const other of gameState.nodes){
+      if(other===this||!other.isAwakened||this.connSet.has(other.id))continue;
+      if(distSq(this.x,this.y,other.x,other.y)>r2)continue;
       this.connections.push(other);other.connections.push(this);
       this.connSet.add(other.id);other.connSet.add(this.id);
       const boost=.2*(1+currentLevelIndex*.5);
@@ -348,7 +371,7 @@ class ConsciousnessNode {
       const avg=(this.loopPhase+other.loopPhase)/2;
       this.loopPhase=avg+Math.PI*sync;
       other.loopPhase=avg-Math.PI*sync;
-    });
+    }
   }
 }
 
@@ -529,27 +552,41 @@ function pointerPos(e){
 }
 
 canvas.addEventListener('mousemove',e=>{const p=pointerPos(e);mx=p.x;my=p.y});
+function awakenAt(x,y){
+  const lv=levels[currentLevelIndex];
+  for(let i=gameState.nodes.length-1;i>=0;i--){
+    const n=gameState.nodes[i];
+    if(n.hit(x,y)){
+      const was=n.isAwakened;
+      n.awaken(lv);
+      if(!was)checkProgress();
+      return true;
+    }
+  }
+  return false;
+}
+
 canvas.addEventListener('click',e=>{
   initAudio();
   const {x,y}=pointerPos(e);
-  let hit=false;
-  const lv=levels[currentLevelIndex];
-  for(const n of gameState.nodes)if(n.hit(x,y)){n.awaken(lv);hit=true;checkProgress()}
-  if(!hit)spawnParticles(x,y,5);
+  if(!awakenAt(x,y))spawnParticles(x,y,5);
 });
+
+let touchBurst=false;
 canvas.addEventListener('touchstart',e=>{
-  e.preventDefault();initAudio();
+  e.preventDefault();
+  initAudio();
   const t=e.touches[0],r=canvas.getBoundingClientRect();
-  mx=t.clientX-r.left;my=t.clientY-r.top;space=true;
-  const lv=levels[currentLevelIndex];
-  for(const n of gameState.nodes)if(n.hit(mx,my)){n.awaken(lv);checkProgress()}
+  mx=t.clientX-r.left;my=t.clientY-r.top;
+  if(!awakenAt(mx,my))touchBurst=true;
 },{passive:false});
 canvas.addEventListener('touchmove',e=>{
   e.preventDefault();
   const t=e.touches[0],r=canvas.getBoundingClientRect();
   mx=t.clientX-r.left;my=t.clientY-r.top;
+  touchBurst=true;
 },{passive:false});
-canvas.addEventListener('touchend',()=>{space=false});
+canvas.addEventListener('touchend',()=>{touchBurst=false});
 document.addEventListener('keydown',e=>{
   if(e.code==='Space'){space=true;initAudio();e.preventDefault()}
   if(e.code==='KeyL'){
@@ -603,7 +640,7 @@ function loop(now){
   gameState.loveFlux=dE/Math.max(dt,.001);
   gameState.prevLoveEnergy=gameState.loveEnergy;
 
-  if(space)loveBurst(mx,my);
+  if(space||touchBurst)loveBurst(mx,my);
 
   frameCount++;
   if(now-lastFpsTime>=1000){
