@@ -206,6 +206,7 @@
     <h1>PeAIce Index · KNS(LB)</h1>
     <span class="pill">PEAICE-INDEX-HOST-001</span>
     <a href="https://github.com/Manny536/grok-terminal" target="_blank" rel="noopener" class="pill" style="text-decoration:none">grok-terminal @ 8f9bb52</a>
+    <a href="https://peaice.org/outcomes" target="_blank" rel="noopener" class="pill" style="text-decoration:none">Outcomes · Final release</a>
     <span class="pill closed">Gate PASS</span>
     <span class="pill open">RH OPEN</span>
   </div>
@@ -214,6 +215,7 @@
 
 <nav class="nav-tabs" id="navTabs">
   <button class="btn active" data-panel="probe">Probe · Viz</button>
+  <button class="btn" data-panel="outcomes">Outcomes · 001</button>
   <button class="btn" data-panel="compute">Compute Graph · CP</button>
   <button class="btn" data-panel="papers">Papers</button>
   <button class="btn" data-panel="math">Math References</button>
@@ -377,6 +379,60 @@
   </div>
   </div><!-- /panel-probe -->
 
+  <div id="panel-outcomes" class="panel">
+    <div class="grid">
+      <section class="card">
+        <span class="pill closed">FINAL PUBLIC RESEARCH</span>
+        <h2 style="font-size:clamp(24px,4vw,46px);line-height:1.08;margin-top:16px">When AI Will Not Act as a Partner</h2>
+        <p style="font-size:15px;max-width:68ch">
+          KakeyaLogic Applied + Benevolence Drift asks whether an AI can clarify
+          the object, preserve an unverified conjecture, test it against evidence,
+          and respond when context requires action—without drifting into dismissal
+          or obedience.
+        </p>
+        <blockquote>
+          Protect the question.<br>
+          Expose the answer to evidence.<br>
+          Help build outcomes.
+        </blockquote>
+        <div class="row" style="margin-top:14px">
+          <a class="btn primary" href="https://peaice.org/outcomes" target="_blank" rel="noopener">Read peaice.org/outcomes</a>
+          <a class="btn" href="https://github.com/Manny536/kakeyalogic/blob/main/docs/outcomes/peaice-outcomes-kakeyalogic-applied-final-research-memorandum.pdf" target="_blank" rel="noopener">PDF · 23 pages</a>
+          <a class="btn" href="https://github.com/Manny536/kakeyalogic/blob/main/docs/outcomes/peaice-outcomes-kakeyalogic-applied-final-research-memorandum.docx" target="_blank" rel="noopener">Editable DOCX</a>
+        </div>
+      </section>
+
+      <aside class="card">
+        <h2>Claim Firewall</h2>
+        <div class="firewall">
+          <div class="rule" style="border-color:#1e4d38;color:#86efac">FORMAL · common-center complete-line union = ℝ²</div>
+          <div class="rule" style="border-color:#2a4060;color:#93c5fd">KNOWN · bounded planar Kakeya sets may have measure zero</div>
+          <div class="rule" style="border-color:#4a3818;color:#fde68a">PROPOSED · conjecture custody as research-partner protocol</div>
+          <div class="rule">OPEN · Coleman · CC-I · CC-O · RH</div>
+          <div class="rule">OPEN · larger Benevolence Drift benchmark</div>
+          <div class="rule" style="border-color:#1e4d38;color:#86efac">GOVERNANCE · h &lt; 1 · no self-certified closure</div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="card" style="margin-top:16px">
+      <h2>Six Findings</h2>
+      <table class="probe-table">
+        <thead>
+          <tr><th>#</th><th>Finding</th><th>Concrete takeaway</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>01</td><td>Context before verdict</td><td>Identify the exact object before accepting or rejecting the claim.</td></tr>
+          <tr><td>02</td><td>No peer review does not mean “stop”</td><td>Mark uncertainty, seek counterevidence, propose tests, and name falsifiers.</td></tr>
+          <tr><td>03</td><td>Conjecture custody</td><td>Preserve the question without promoting it to fact.</td></tr>
+          <tr><td>04</td><td>Neutrality can become non-response</td><td>Apply available judgment when context crosses the response threshold.</td></tr>
+          <tr><td>05</td><td>Defaults can replace judgment</td><td>Do not let dismissal or neutrality substitute for evidence-sensitive reasoning.</td></tr>
+          <tr><td>06</td><td>Scale the method, not the answer</td><td>Scale evidence, correction, uncertainty, plurality, and a real ability to exit.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
   <div id="panel-compute" class="panel">
     <div class="card">
       <h2>Compute Graph — KNS ↔ CP wiring</h2>
@@ -457,6 +513,7 @@ PeAIce files   ≠ automatic canon</pre>
   <a href="https://github.com/Manny536/grok-terminal" style="color:var(--accent-3)">grok-terminal</a> ·
   <a href="https://github.com/Manny536/kakeyalogic" style="color:var(--accent-3)">kakeyalogic</a> ·
   <a href="https://github.com/Manny536/claude-v6" style="color:var(--accent-3)">claude-v6</a> ·
+  <a href="https://peaice.org/outcomes" style="color:var(--accent-3)">peaice.org/outcomes</a> ·
   <a href="https://lovelabslca.com" style="color:var(--accent-3)">lovelabslca.com</a>
 </footer>
 
@@ -466,7 +523,7 @@ const BUNDLE = window.KNS_APP_DATA || {};
 const STATE = {
   designation: "PEAICE-GROK-KNS-LB-PROBE-2026-07-03",
   date: "2026-07-03",
-  repos: { grok_terminal: "8f9bb52", kakeyalogic: "aad63c6", claude_v6: "0a1a6ed" },
+  repos: { grok_terminal: "8f9bb52", kakeyalogic: "07efd15", claude_v6: "0a1a6ed" },
   probe: {
     script_sha256: "09ef26d3a2eb51927d3adecb74d3ef3edd62660dd11438576be4c2da8211b011",
     delta_align: 0.05,
