@@ -12,6 +12,8 @@ GitHub Pages: **https://manny536.github.io/peaice-index/**
 
 PeAIce public study: **https://peaice.org/thinkingmachines**
 
+PeAIce Outcomes: **https://peaice.org/outcomes**
+
 ## What this is
 
 - **index.html** — KNS(LB) light thought-probe UI (fan/Perron visualization, probe receipt, Compute Package graph, papers, math references)
@@ -19,6 +21,7 @@ PeAIce public study: **https://peaice.org/thinkingmachines**
 - **probes/kns_lb_probe.py** — deterministic KNS gate probe (standard library only)
 - **scripts/cp_verify.py** — reproducibility stamp harness
 - **docs/benevolence-drift-ai-neutrality.md** — `BD-AI-CASE-01` public-route registration and cross-repo source map
+- **Outcomes tab** — final KakeyaLogic Applied + Benevolence Drift findings, claim firewall, and publication links
 
 ## Rebuild data
 
