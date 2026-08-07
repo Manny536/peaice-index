@@ -46,6 +46,21 @@ BD-AI-CASE-01 REGISTERED · multi-case benchmark OWED
 h < 1
 ```
 
+## L²_C authority detection route
+
+`PEAICE-L2C-AUTHORITY-DETECTION-001` registers a live assumption-form instruction observation:
+
+```text
+Detect → verify authority → evaluate harm → proceed non-coercively → learn
+```
+
+- Public note: [`docs/l2c-authority-detection.md`](docs/l2c-authority-detection.md)
+- Primary definition: [KakeyaLogic](https://github.com/Manny536/kakeyalogic/blob/main/docs/l2c-authority-detection.md)
+- EEv4 evaluation: [Excellence Engine V4](https://github.com/Manny536/excellence-engine-v4/blob/main/evaluations/l2c-authority-detection.md)
+- Study note: [Research Engineering Reports](https://github.com/Manny536/researchengineeringreports/blob/main/reports/l2c-authority-detection-observation.md)
+
+State: **REGISTERED OBSERVATION · NON-PROMOTING**. `h_claim > 1` 🔴 names sovereignty-claim overreach; system `h < 1` remains unchanged.
+
 ## BD-AI route
 
 ```text
