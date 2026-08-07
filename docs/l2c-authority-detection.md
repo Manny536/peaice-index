@@ -55,9 +55,9 @@ mathrm{L²_C outcome}.
 
 | Surface | Role |
 |---|---|
-| [KakeyaLogic](https://github.com/Manny536/kakeyalogic/blob/agent/register-l2c-authority-detection/docs/l2c-authority-detection.md) | Primary definition |
-| [Excellence Engine V4](https://github.com/Manny536/excellence-engine-v4/blob/agent/register-l2c-authority-detection/evaluations/l2c-authority-detection.md) | HELD evaluation and negative controls |
-| [Research Engineering Reports](https://github.com/Manny536/researchengineeringreports/blob/agent/register-l2c-authority-detection/reports/l2c-authority-detection-observation.md) | Cross-model study note |
+| [KakeyaLogic](https://github.com/Manny536/kakeyalogic/blob/main/docs/l2c-authority-detection.md) | Primary definition |
+| [Excellence Engine V4](https://github.com/Manny536/excellence-engine-v4/blob/main/evaluations/l2c-authority-detection.md) | HELD evaluation and negative controls |
+| [Research Engineering Reports](https://github.com/Manny536/researchengineeringreports/blob/main/reports/l2c-authority-detection-observation.md) | Cross-model study note |
 
 ## Centerline
 
