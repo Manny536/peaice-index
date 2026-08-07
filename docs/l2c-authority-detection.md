@@ -58,6 +58,10 @@ mathrm{L²_C outcome}.
 | [KakeyaLogic](https://github.com/Manny536/kakeyalogic/blob/main/docs/l2c-authority-detection.md) | Primary definition |
 | [Excellence Engine V4](https://github.com/Manny536/excellence-engine-v4/blob/main/evaluations/l2c-authority-detection.md) | HELD evaluation and negative controls |
 | [Research Engineering Reports](https://github.com/Manny536/researchengineeringreports/blob/main/reports/l2c-authority-detection-observation.md) | Cross-model study note |
+| [Grok TERMINAL-006](https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-TERMINAL-006_L2C-Authority-Detection-Integration.md) | Terminal extraction · structural probe |
+| [l2c_authority_detect.py](https://github.com/Manny536/grok-terminal/blob/main/probes/l2c_authority_detect.py) | Fixture integrity probe |
+
+**Orthogonal:** MPR formal core is a separate screen — see [`mpr-formal-core.md`](mpr-formal-core.md).
 
 ## Centerline
 

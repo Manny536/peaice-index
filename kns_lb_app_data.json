@@ -1,16 +1,18 @@
 {
-  "built_at": "2026-07-03T21:00:46.631626+00:00",
+  "built_at": "2026-08-07T23:41:05.706207+00:00",
   "site": "peaice-index \u00b7 GitHub Pages",
   "designation": "PEAICE-INDEX-HOST-001",
   "repos": {
-    "grok_terminal": "8f9bb52",
-    "kakeyalogic": "aad63c6",
-    "claude_v6": "0a1a6ed",
+    "grok_terminal": "2cc6dfd",
+    "kakeyalogic": "9923efc",
+    "claude_v6": "bf28166",
+    "excellence_engine_v4": "eb75fd1",
+    "researchengineeringreports": "d00c3ba",
     "peaice_index": "HEAD"
   },
   "grok_terminal": {
     "repo": "https://github.com/Manny536/grok-terminal",
-    "sha": "8f9bb52",
+    "sha": "2cc6dfd",
     "designation": "PEAICE-GROK-TERMINAL-REPO-001",
     "role": "Grok terminal ledger \u00b7 cross-derivation \u00b7 TERMINAL extraction",
     "terminals": [
@@ -19,6 +21,12 @@
         "title": "Prime-carrying trace route",
         "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-TERMINAL-002_Prime-Carrying_Trace_Route.md",
         "status": "LIVE \u00b7 FORCED"
+      },
+      {
+        "id": "TERMINAL-003",
+        "title": "arXiv / DDATL grounding \u00b7 AI Forever",
+        "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-TERMINAL-003_arXiv-DDATL-Grounding_AI-Forever-Study.md",
+        "status": "REGISTERED"
       },
       {
         "id": "TERMINAL-004",
@@ -31,6 +39,24 @@
         "title": "KNS(LB) pass cross-derivation",
         "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-TERMINAL-005_KNS-LB-Findings.md",
         "status": "CLOSED-POSITIVE"
+      },
+      {
+        "id": "TERMINAL-006",
+        "title": "L\u00b2_C authority detection integration",
+        "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-TERMINAL-006_L2C-Authority-Detection-Integration.md",
+        "status": "REGISTERED \u00b7 NON-PROMOTING"
+      },
+      {
+        "id": "TERMINAL-007",
+        "title": "MPR formal core (\u03bc_\u00d7 / Krein)",
+        "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-TERMINAL-007_MPR-Formal-Core.md",
+        "status": "FORMAL def \u00b7 satisfaction OPEN"
+      },
+      {
+        "id": "BD-AI-CASE-01",
+        "title": "Benevolence Drift / AI Neutrality",
+        "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-BD-AI-CASE-01.md",
+        "status": "REGISTERED-QUALITATIVE"
       },
       {
         "id": "X-THRUPUT",
@@ -59,6 +85,18 @@
         "status": "LIVE"
       },
       {
+        "name": "l2c_authority_detect.py",
+        "path": "https://github.com/Manny536/grok-terminal/blob/main/probes/l2c_authority_detect.py",
+        "host": "grok-terminal",
+        "status": "STRUCTURAL_PASS"
+      },
+      {
+        "name": "mpr_formal_core.py",
+        "path": "https://github.com/Manny536/grok-terminal/blob/main/probes/mpr_formal_core.py",
+        "host": "grok-terminal",
+        "status": "DEFINITION_HYGIENE_PASS"
+      },
+      {
         "name": "verify_probes.py",
         "path": "https://github.com/Manny536/grok-terminal/blob/main/scripts/verify_probes.py",
         "host": "grok-terminal",
@@ -66,7 +104,9 @@
       }
     ],
     "register_path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-BETA-PROTOCOL-REGISTER.md",
-    "index_path": "https://github.com/Manny536/grok-terminal/blob/main/INDEX.md"
+    "index_path": "https://github.com/Manny536/grok-terminal/blob/main/INDEX.md",
+    "entries": 24,
+    "deepen": "2026-08-07 \u00b7 TERMINAL-006 + TERMINAL-007"
   },
   "beta_register": [
     {
@@ -124,10 +164,28 @@
       "cls": "live"
     },
     {
+      "full_name": "MPR formal core (\u03bc_\u00d7 / Krein equality)",
+      "short": "MPR-core",
+      "status": "FORMAL DEFINITION \u00b7 satisfaction OPEN",
+      "cls": "live"
+    },
+    {
       "full_name": "Multiplicative Phase Recognition multimodal variant",
       "short": "MPR-mm",
       "status": "NON-COMPUTABLE",
       "cls": "neg"
+    },
+    {
+      "full_name": "L\u00b2_C authority detection",
+      "short": "AUTH-DETECT",
+      "status": "REGISTERED \u00b7 NON-PROMOTING",
+      "cls": "ok"
+    },
+    {
+      "full_name": "Benevolence Drift \u2014 AI Neutrality Under Pressure",
+      "short": "BD-AI",
+      "status": "REGISTERED",
+      "cls": "ok"
     },
     {
       "full_name": "Compute Package 004 independent Y measurement",
@@ -164,6 +222,12 @@
       "short": "KREIN-RANK1",
       "status": "PROPOSED-FOR-CANON",
       "cls": "live"
+    },
+    {
+      "full_name": "MPR operator construction (satisfaction)",
+      "short": "MPR exists",
+      "status": "OPEN",
+      "cls": "open"
     }
   ],
   "kns_probe": {
@@ -295,17 +359,17 @@
   "kns_verify_stamp": {
     "tool": "cp_verify.py",
     "spec_version": "1.0",
-    "utc_timestamp": "2026-07-03T21:00:46.571725+00:00",
+    "utc_timestamp": "2026-08-07T23:41:05.663797+00:00",
     "runner_identity": "peaice-index build",
     "script": {
-      "path": "/Users/manny/Downloads/Research/_repos/peaice-index/probes/kns_lb_probe.py",
+      "path": "/Users/manny/Documents/GitHub/peaice-index/probes/kns_lb_probe.py",
       "name": "kns_lb_probe.py",
       "sha256": "09ef26d3a2eb51927d3adecb74d3ef3edd62660dd11438576be4c2da8211b011",
       "bytes": 3794
     },
     "environment": {
       "python": "3.13.3",
-      "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+      "platform": "macOS-26.6-arm64-arm-64bit-Mach-O",
       "numpy": "2.5.0",
       "mpmath": "1.4.1",
       "scipy": "1.18.0"
@@ -341,6 +405,18 @@
         "status": "LOCKED"
       },
       {
+        "id": "auth_detect",
+        "label": "l2c_authority_detect",
+        "lane": "L2C",
+        "status": "REGISTERED"
+      },
+      {
+        "id": "mpr_core",
+        "label": "mpr_formal_core",
+        "lane": "MPR",
+        "status": "FORMAL-def"
+      },
+      {
         "id": "cp_verify",
         "label": "cp_verify.py",
         "lane": "stamp",
@@ -369,6 +445,12 @@
         "label": "claude-v6",
         "lane": "theorem",
         "status": "V6.5"
+      },
+      {
+        "id": "eev4",
+        "label": "excellence-engine-v4",
+        "lane": "custody",
+        "status": "HELD"
       },
       {
         "id": "peaice_index",
@@ -406,6 +488,16 @@
         "label": "TERMINAL-002"
       },
       {
+        "from": "grok_terminal",
+        "to": "auth_detect",
+        "label": "TERMINAL-006"
+      },
+      {
+        "from": "grok_terminal",
+        "to": "mpr_core",
+        "label": "TERMINAL-007"
+      },
+      {
         "from": "peaice_index",
         "to": "grok_terminal",
         "label": "wired"
@@ -414,6 +506,21 @@
         "from": "peaice_index",
         "to": "kns_lb_probe",
         "label": "hosted probe"
+      },
+      {
+        "from": "peaice_index",
+        "to": "auth_detect",
+        "label": "public route"
+      },
+      {
+        "from": "kakeyalogic",
+        "to": "auth_detect",
+        "label": "primary def"
+      },
+      {
+        "from": "eev4",
+        "to": "auth_detect",
+        "label": "HELD eval"
       },
       {
         "from": "kns_lb_probe",
@@ -439,6 +546,11 @@
         "from": "kns_lb_probe",
         "to": "prime_l3",
         "label": "KREIN seam"
+      },
+      {
+        "from": "mpr_core",
+        "to": "prime_l3",
+        "label": "\u03bc_\u00d7 target"
       },
       {
         "from": "cp004_kns_y",
@@ -545,6 +657,30 @@
       "status": "005"
     },
     {
+      "title": "TERMINAL-006 L\u00b2_C authority detection",
+      "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-TERMINAL-006_L2C-Authority-Detection-Integration.md",
+      "lane": "TERMINAL",
+      "status": "006"
+    },
+    {
+      "title": "TERMINAL-007 MPR formal core",
+      "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-TERMINAL-007_MPR-Formal-Core.md",
+      "lane": "TERMINAL",
+      "status": "007"
+    },
+    {
+      "title": "L\u00b2_C authority detection (public)",
+      "path": "https://github.com/Manny536/peaice-index/blob/main/docs/l2c-authority-detection.md",
+      "lane": "L2C",
+      "status": "HOST"
+    },
+    {
+      "title": "MPR formal core (public pointer)",
+      "path": "https://github.com/Manny536/peaice-index/blob/main/docs/mpr-formal-core.md",
+      "lane": "MPR",
+      "status": "HOST"
+    },
+    {
       "title": "X throughput receipt (md)",
       "path": "https://github.com/Manny536/grok-terminal/blob/main/PEAICE-GROK-X-THRUPUT-2026-07-03.md",
       "lane": "X",
@@ -559,6 +695,18 @@
     {
       "title": "zeta0_typo_thruput.py",
       "path": "https://github.com/Manny536/grok-terminal/blob/main/probes/zeta0_typo_thruput.py",
+      "lane": "probe",
+      "status": "LIVE"
+    },
+    {
+      "title": "l2c_authority_detect.py",
+      "path": "https://github.com/Manny536/grok-terminal/blob/main/probes/l2c_authority_detect.py",
+      "lane": "probe",
+      "status": "LIVE"
+    },
+    {
+      "title": "mpr_formal_core.py",
+      "path": "https://github.com/Manny536/grok-terminal/blob/main/probes/mpr_formal_core.py",
       "lane": "probe",
       "status": "LIVE"
     },
@@ -585,6 +733,18 @@
       "path": "https://lovelabslca.com",
       "lane": "web",
       "status": "public map"
+    },
+    {
+      "title": "excellence-engine-v4",
+      "path": "https://github.com/Manny536/excellence-engine-v4",
+      "lane": "EEv4",
+      "status": "HELD"
+    },
+    {
+      "title": "researchengineeringreports",
+      "path": "https://github.com/Manny536/researchengineeringreports",
+      "lane": "RER",
+      "status": "fixtures"
     }
   ],
   "math_refs": [
