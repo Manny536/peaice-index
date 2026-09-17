@@ -16,6 +16,6 @@ SIUS asks whether fixed declared safeguards remain operative as their environmen
 | `peaice-index` | [INDEX-SIUS-001](https://github.com/Manny536/peaice-index/blob/main/docs/sius.md) | Compressed public route | ROUTE ONLY |
 | `love2-coherence-core` | [L2C-SIUS-DEP-001](https://github.com/Manny536/love2-coherence-core/blob/main/docs/sius-dependency.md) | h < 1 and correction-retention dependency | DEPENDENCY POINTER |
 
-Standalone source: Standalone basis: [SIUS Integrity.docx](https://github.com/Manny536/researchengineeringreports/blob/main/reports/sources/SIUS%20Integrity.docx), supplied by the user in “Explain sticky sets.” [Source provenance and limits](https://github.com/Manny536/researchengineeringreports/blob/main/reports/sources/sius-integrity-provenance.md).
+Standalone source: Standalone basis: [SIUS Integrity.docx](https://github.com/Manny536/researchengineeringreports/blob/main/reports/sources/sius-integrity-provenance.md), supplied by the user in “Explain sticky sets.” [Source provenance and limits](https://github.com/Manny536/researchengineeringreports/blob/main/reports/sources/sius-integrity-provenance.md).
 
 Operational SIUS/SIUT validity remains OPEN. The [finite-grain operator](https://github.com/Manny536/kakeyalogic/blob/main/docs/operators/finite-grain-del.md) (`KL-SIUS-OP-001`) is separately PROPOSED. This page is a route only; registration supplies no theorem or operational validation. `h < 1`.
