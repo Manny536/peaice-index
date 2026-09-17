@@ -109,3 +109,9 @@ BD-AI != NB/BD
 ```
 
 PeAIce files enter the registered research state through explicit source mapping, receipts, and bounded claim status.
+
+## SIUS registration — PEAICE-SIUS-001
+
+[INDEX-SIUS-001](docs/sius.md) — Compressed public route. **ROUTE ONLY.** SIUT remains a sibling condition. The finite-grain operator is separately PROPOSED; no open claim is promoted.
+
+Controlling definition: [KL-SIUS-001](https://github.com/Manny536/kakeyalogic/blob/main/docs/core/safeguard-integrity-under-stagnation.md).
