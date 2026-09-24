@@ -115,3 +115,7 @@ PeAIce files enter the registered research state through explicit source mapping
 [INDEX-SIUS-001](docs/sius.md) — Compressed public route. **ROUTE ONLY.** SIUT remains a sibling condition. The finite-grain operator is separately PROPOSED; no open claim is promoted.
 
 Controlling definition: [KL-SIUS-001](https://github.com/Manny536/kakeyalogic/blob/main/docs/core/safeguard-integrity-under-stagnation.md).
+
+## GIUS external-case routes
+
+[SIUS/GIUS routes](docs/sius.md#gius-external-case-routes-2026-09-24) — route only; no new claim or validation.

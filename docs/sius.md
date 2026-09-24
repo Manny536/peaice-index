@@ -19,3 +19,17 @@ SIUS asks whether fixed declared safeguards remain operative as their environmen
 Standalone source: Standalone basis: [SIUS Integrity.docx](https://github.com/Manny536/researchengineeringreports/blob/main/reports/sources/SIUS%20Integrity.docx), supplied by the user in “Explain sticky sets.” [Source provenance and limits](https://github.com/Manny536/researchengineeringreports/blob/main/reports/sources/sius-integrity-provenance.md).
 
 Operational SIUS/SIUT validity remains OPEN. The [finite-grain operator](https://github.com/Manny536/kakeyalogic/blob/main/docs/operators/finite-grain-del.md) (`KL-SIUS-OP-001`) is separately PROPOSED. This page is a route only; registration supplies no theorem or operational validation. `h < 1`.
+
+## GIUS external-case routes, 2026-09-24
+
+ROUTE ONLY. The linked owners control the objects and their statuses; this page adds no evidence or validation.
+
+| Object | Owner and route | Owner status |
+|---|---|---|
+| GIUS-CASE-HF-2026-001 | [GIUS case](https://github.com/Manny536/Guardrail-integrity-under-stagnation/blob/research/gius-hf-2026/docs/case-studies/hugging-face-2026.md) | REGISTERED EXTERNAL CASE STUDY · NON-VALIDATING |
+| GIUS-DIAG-BST-001 | [GIUS diagnostic](https://github.com/Manny536/Guardrail-integrity-under-stagnation/blob/research/gius-hf-2026/docs/boundary-search-transition.md) | PROPOSED DIAGNOSTIC |
+| GIUS-BENCH-001 | [GIUS application fixture](https://github.com/Manny536/Guardrail-integrity-under-stagnation/blob/research/gius-hf-2026/docs/benchmark-protocol.md) | SYNTHETIC CALIBRATION |
+| L2C-H-001 | [love2-coherence-core dependency](https://github.com/Manny536/love2-coherence-core/blob/research/gius-hf-2026/docs/evaluator-non-sovereignty.md) | DOCUMENTED DEFINITION · METRIC OPEN |
+| RER-GIUS-HF-2026-001 | [Research article](https://github.com/Manny536/researchengineeringreports/blob/research/gius-hf-2026/reports/when-the-boundary-becomes-the-search-space.md) / [sources](https://github.com/Manny536/researchengineeringreports/blob/research/gius-hf-2026/reports/sources/hugging-face-2026.md) | WORKING RESEARCH ARTICLE |
+
+Operational validity remains OPEN. Review-branch links resolve pending owner PRs; repin when branches are retired.
