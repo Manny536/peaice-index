@@ -35,10 +35,10 @@ python3 probes/kns_lb_probe.py   # expect exit 0
 | Repo | Role | Pin (session) |
 |------|------|----------------|
 | [grok-terminal](https://github.com/Manny536/grok-terminal) | Grok ledger · TERMINALs · receipts · probes | `2cc6dfd` |
-| [kakeyalogic](https://github.com/Manny536/kakeyalogic) | Math record · L²_C authority primary · Outcomes | `9923efc` |
-| [excellence-engine-v4](https://github.com/Manny536/excellence-engine-v4) | EEv4 HELD custody · AUTH-DETECT evaluation | `eb75fd1` |
+| [kakeyalogic](https://github.com/Manny536/kakeyalogic) | Math record · L²_C authority primary · Outcomes · granular compaction audit and whitepaper | `aa3be9c` |
+| [excellence-engine-v4](https://github.com/Manny536/excellence-engine-v4) | EEv4 HELD custody · AUTH-DETECT evaluation · compactness gate | `0099450` |
 | [claude-v6](https://github.com/Manny536/claude-v6) | Theorem-facing ledger · V6.5 · notation firewall | `bf28166` |
-| [researchengineeringreports](https://github.com/Manny536/researchengineeringreports) | AUTH-DETECT fixtures + observation | `d00c3ba` |
+| [researchengineeringreports](https://github.com/Manny536/researchengineeringreports) | AUTH-DETECT fixtures + observation · SIUS/GIUS reports | `7ab5f11` |
 | [LoveLabs-LCA](https://github.com/Manny536/LoveLabs-LCA) | CUP evaluations · BD-AI benchmark home | — |
 
 ## Registered state (August 7, 2026)
@@ -119,3 +119,19 @@ Controlling definition: [KL-SIUS-001](https://github.com/Manny536/kakeyalogic/bl
 ## GIUS external-case routes
 
 [SIUS/GIUS routes](docs/sius.md#gius-external-case-routes-2026-09-24) — route only; no new claim or validation.
+
+## Granular compaction target — 2026-09-29
+
+Pins above for kakeyalogic `aa3be9c` and excellence-engine-v4 `0099450` are the commits that carry the two added statuses. researchengineeringreports remains `7ab5f11`. The grok-terminal and claude-v6 pins were not re-checked.
+
+This index may point at the audit. It does not become the audit.
+
+KakeyaLogic indexing, as recorded in the screenshots, is the unstable public search synthesis of the name: classical Kakeya text, a spelling-neighbor and gaming split, and a later compaction overview that still appends the mathematical namesake. The ladders stay ordered research state — the Grain Zero residual ladder, the closure and Fable transfers, the `n⁴` and prime-carrying lanes, and the EEV4 G0–G5 gate. A search card has not advanced a rung.
+
+- Whitepaper: [granular compaction whitepaper](https://github.com/Manny536/kakeyalogic/blob/main/docs/whitepapers/granular-compaction-whitepaper.docx)
+- Audit: [kakeyalogic granular-compaction status](https://github.com/Manny536/kakeyalogic/blob/main/docs/status/granular-compaction-live-2026-09-28.md)
+- Screenshot receipt: [EEV4 live evidence](https://github.com/Manny536/excellence-engine-v4/blob/main/evaluations/granular-compaction-live-evidence.md)
+- Limit lane: **BLOCKED-COMPACTNESS**
+- Indexing: **OBSERVED · UNSTABLE**
+- Ladder preservation under that indexing: **NOT OBSERVED**
+- `h < 1`
